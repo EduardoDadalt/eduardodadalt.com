@@ -1,8 +1,10 @@
+import ProgrammingLanguages from "@/components/sections/languages/programming-languages";
+
 export default function Home() {
   return (
     <div>
-      {/* Linguagens */}
-
+      {/* Linguagens de Programação */}
+      <ProgrammingLanguages />
       {/* Tecnologias que utilizo */}
 
       {/* Soluções */}
