@@ -1,18 +1,18 @@
 import Header from "@/components/header";
+import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import { Montserrat, Roboto } from "next/font/google";
+import { Montserrat, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import { cn } from "@/lib/utils";
 
 const FontDisplay = Montserrat({
   subsets: ["latin"],
   variable: "--font-display",
 });
 
-const FontBody = Roboto({
+const FontBody = Open_Sans({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "600", "700"],
   variable: "--font-body",
 });
 

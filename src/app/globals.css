@@ -24,3 +24,7 @@ h5,
 h6 {
   @apply font-display;
 }
+
+main a {
+  @apply text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300;
+}
