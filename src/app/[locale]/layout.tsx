@@ -1,9 +1,10 @@
 import Header from "@/components/header";
 import { cn } from "@/lib/utils";
-import type { Metadata } from "next";
 import { Montserrat, Open_Sans } from "next/font/google";
-import "./globals.css";
+import "@/styles/globals.css";
 import { Providers } from "./providers";
+import { LOCALES } from "@/constants/locales";
+import { Analytics } from "@vercel/analytics/react";
 
 const FontDisplay = Montserrat({
   subsets: ["latin"],
@@ -16,17 +17,19 @@ const FontBody = Open_Sans({
   variable: "--font-body",
 });
 
-export const metadata: Metadata = {
-  title: "Eduardo Dadalt - Desenvolvedor Full Stack",
-};
+export async function generateStaticParams() {
+  return LOCALES.map((locale) => ({ locale }));
+}
 
 export default function RootLayout({
   children,
+  params: { locale },
 }: Readonly<{
   children: React.ReactNode;
+  params: { locale: string };
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={cn(
           FontBody.variable,
@@ -40,9 +43,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
+          <Header locale={locale} />
           <main className="flex-1">{children}</main>
         </Providers>
+        <Analytics />
       </body>
     </html>
   );

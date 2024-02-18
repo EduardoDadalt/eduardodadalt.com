@@ -1,5 +1,6 @@
 import CardLevel from "@/components/card-level";
 import { LevelType } from "@/components/card-level/level";
+import { getDictionary } from "@/dictionaries/dictionaries";
 
 type Technology = {
   name: string;
@@ -27,13 +28,15 @@ const technologies: Technology[] = [
   { name: "JWT", level: 2 },
 ];
 
-export default function Technologies() {
+export default async function Technologies({ locale }: { locale: string }) {
+  const dictionary = await getDictionary(locale);
   return (
-    <section>
-      <h2 className="text-2xl font-bold">Tecnologias que utilizo</h2>
+    <section id="tecnologias">
+      <h2 className="text-2xl font-bold">
+        {dictionary.homepage.technology.title}
+      </h2>
       <p className="text-gray-500">
-        Aqui estão algumas das tecnologias que tenho experiência e que posso
-        utilizar para desenvolver soluções.
+        {dictionary.homepage.technology.description}
       </p>
       <div className="flex flex-row flex-wrap gap-2 *:flex-1 ">
         {technologies.map((technology, index) => (
@@ -42,7 +45,8 @@ export default function Technologies() {
             name={technology.name}
             level={technology.level}
             icon={`/icons/technologies/${technology.name.toLowerCase()}.svg`}
-            iconAlt={`Ícone do ${technology.name}`}
+            iconAlt={`${dictionary.homepage.programmingLanguage.iconOf} ${technology.name}`}
+            locale={locale}
           />
         ))}
       </div>

@@ -1,37 +1,37 @@
 import Image from "next/image";
 import Level, { LevelType } from "./level";
+import { getDictionary } from "@/dictionaries/dictionaries";
 
-export default function CardLevel({
+export default async function CardLevel({
   name,
   level,
   icon,
   iconAlt,
-}:
+  locale,
+}: { name: string; level: LevelType; locale: string } & (
   | {
-      name: string;
-      level: LevelType;
       icon?: undefined;
       iconAlt?: string;
     }
   | {
-      name: string;
-      level: LevelType;
       icon: string;
       iconAlt: string;
-    }) {
+    }
+)) {
+  const dictionary = await getDictionary(locale);
   const getLevelLabel = (level: LevelType): string => {
     switch (level) {
       case 1:
-        return "Básico";
+        return dictionary.components.cardLevel.basic;
       case 2:
-        return "Intermediário";
+        return dictionary.components.cardLevel.intermediate;
       case 3:
-        return "Avançado";
+        return dictionary.components.cardLevel.advanced;
     }
   };
 
   return (
-    <div className="flex min-w-[260px] flex-row items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-100 p-2 shadow dark:border-slate-800 dark:bg-slate-900">
+    <div className="flex min-w-[260px] break-inside-avoid flex-row items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-100 p-2 shadow dark:border-slate-800 dark:bg-slate-900">
       <div className="flex items-center justify-center gap-2">
         {!!icon && (
           <Image

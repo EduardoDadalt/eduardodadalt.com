@@ -1,5 +1,6 @@
 import CardLevel from "@/components/card-level";
 import { LevelType } from "@/components/card-level/level";
+import { getDictionary } from "@/dictionaries/dictionaries";
 
 type ProgrammingLanguage = {
   name: string;
@@ -39,10 +40,17 @@ const programmingLanguages: ProgrammingLanguage[] = [
   },
 ];
 
-export default function ProgrammingLanguages() {
+export default async function ProgrammingLanguages({
+  locale,
+}: {
+  locale: string;
+}) {
+  const dictionary = await getDictionary(locale);
   return (
-    <section id="#linguagens">
-      <h2 className="text-2xl font-bold">Linguagens de Programação</h2>
+    <section id="linguagens">
+      <h2 className="text-2xl font-bold">
+        {dictionary.homepage.programmingLanguage.title}
+      </h2>
       <div className="flex flex-row flex-wrap gap-2 *:flex-1 ">
         {programmingLanguages.map((language, index) => (
           <CardLevel
@@ -50,7 +58,8 @@ export default function ProgrammingLanguages() {
             name={language.name}
             level={language.level}
             icon={`/icons/programming-languages/${language.name.toLowerCase()}.svg`}
-            iconAlt={`Ícone do ${language.name}`}
+            iconAlt={`${dictionary.homepage.programmingLanguage.iconOf} ${language.name}`}
+            locale={locale}
           />
         ))}
       </div>

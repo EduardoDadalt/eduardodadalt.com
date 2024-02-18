@@ -1,6 +1,15 @@
 .fundo-gradient-texto {
-  @apply bg-gradient-to-tr from-primary-500 via-blue-600 to-primary-700 dark:via-blue-400 dark:to-primary-400;
+  @apply bg-gradient-to-tr from-primary-500 via-blue-600 to-primary-700 dark:via-blue-400 dark:to-primary-400 print:text-primary-600;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+@media print {
+  .fundo-gradient-texto {
+    background-clip: initial;
+    background: none;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+  }
 }

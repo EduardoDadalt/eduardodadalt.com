@@ -1,62 +1,57 @@
+import { getDictionary } from "@/dictionaries/dictionaries";
+import { Briefcase, GraduationCap } from "lucide-react";
+import { MDXRemote } from "next-mdx-remote/rsc";
 import Image from "next/image";
-import "./style.css";
-import Link from "next/link";
-import { Briefcase } from "lucide-react";
 import Experience from "./experience";
+import "./style.css";
+import EducationStep from "./education-step";
 
-export default function MyInfo() {
-  const age =
-    new Date().getFullYear() -
-    2002 -
-    (new Date().getMonth() > 6 && new Date().getDate() >= 10 ? 0 : 1);
+export default async function MyInfo({ locale }: { locale: string }) {
+  const dictionary = await getDictionary(locale);
 
   return (
-    <section>
-      <div className="flex flex-row gap-2">
-        <Image
-          src="/images/profile.png"
-          alt="Imagem do Eduardo Dadalt"
-          width={300}
-          height={300}
-          className="size-24 rounded-full border shadow lg:size-32"
-        />
-        <div className="space-y-2">
-          <h1 className="text-xl md:text-2xl">
-            Olá, meu nome é{" "}
-            <span className="fundo-gradient-texto text-2xl font-bold md:text-4xl">
-              Eduardo Dadalt
-            </span>
-          </h1>
-          <p className="text-justify indent-4">
-            Sou desenvolvedor <b>Full Stack</b> e tenho {age} anos. Atualmente
-            estou estudando Análise e Desenvolvimento de Sistemas na{" "}
-            <Link href="https://fiap.com.br/" target="_blank">
-              FIAP
-            </Link>
-            . Estou sempre em busca de novos conhecimentos e desafios.
-          </p>
+    <>
+      <section>
+        <div className="flex flex-row gap-2">
+          <Image
+            src="/images/profile.png"
+            alt="Imagem do Eduardo Dadalt"
+            width={300}
+            height={300}
+            className="size-24 rounded-full border shadow lg:size-32"
+          />
+          <div className="space-y-2">
+            <h1 className="text-xl">
+              {dictionary.homepage.myInfo.hiMyNameIs}{" "}
+              <span className="fundo-gradient-texto text-2xl font-bold">
+                Eduardo Dadalt
+              </span>
+            </h1>
+            <div className="text-justify indent-4">
+              <MDXRemote source={dictionary.homepage.myInfo.description} />
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="space-y-4">
+      </section>
+      <section className="space-y-4">
         <h2 className="flex flex-row gap-2 text-xl font-bold underline">
-          <Briefcase /> Experiências
+          <Briefcase /> {dictionary.homepage.myInfo.experience.title}
         </h2>
 
-        <Experience
-          nomeEmpresa="Voxy"
-          cargo="Suporte Técnico"
-          dataInicio="Fev de 2021"
-          dataFim="Out de 2021"
-          descricao="Atendimento ao cliente, suporte técnico e desenvolvia algumas soluções para a equipe, como um sistema de correção do arquivo fiscal que o sistema gerava. Também criei um sistema de KDS integrado com o sistema para gerenciamento de pedidos na cozinha"
-        />
-        <Experience
-          nomeEmpresa="JR Sistemas"
-          cargo="Desenvolvedor"
-          dataInicio="Out de 2021"
-          dataFim="Atualmente"
-          descricao="Desenvolvimento de sistemas web e mobile, manutenção de sistemas legados e suporte técnico."
-        />
-      </div>
-    </section>
+        {dictionary.homepage.myInfo.experience.jobs.map((job, index) => (
+          <Experience key={index} {...job} locale={locale} />
+        ))}
+      </section>
+      <section className="space-y-4">
+        <h2 className="flex flex-row gap-2 text-xl font-bold underline">
+          <GraduationCap /> {dictionary.homepage.myInfo.education.title}
+        </h2>
+        <div className="space-y-4">
+          {dictionary.homepage.myInfo.education.steps.map((step, index) => (
+            <EducationStep key={index} {...step} locale={locale} />
+          ))}
+        </div>
+      </section>
+    </>
   );
 }

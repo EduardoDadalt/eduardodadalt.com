@@ -1,16 +1,25 @@
-export default function Experience({
-  nomeEmpresa,
-  cargo,
-  descricao,
-  dataInicio,
-  dataFim,
-}: {
-  nomeEmpresa: string;
-  dataInicio: string;
-  dataFim: string;
-  cargo: string;
-  descricao: string;
-}) {
+import { getDictionary } from "@/dictionaries/dictionaries";
+
+type ExperienceProps = {
+  company: string;
+  dateBegin: string;
+  dataEnd: string;
+  position: string;
+  description: string;
+  locale: string;
+};
+
+export type Experience = Omit<ExperienceProps, "locale">;
+
+export default async function Experience({
+  company: nomeEmpresa,
+  position: cargo,
+  description: descricao,
+  dateBegin: dataInicio,
+  dataEnd: dataFim,
+  locale,
+}: ExperienceProps) {
+  const dictionary = await getDictionary(locale);
   return (
     <div>
       <div className="flex flex-row items-center justify-between">
@@ -22,10 +31,15 @@ export default function Experience({
         </span>
       </div>
       <div>
-        <span className="font-display font-semibold">Cargo:</span> {cargo}
+        <span className="font-display font-semibold">
+          {dictionary.homepage.myInfo.experience.position}:
+        </span>{" "}
+        {cargo}
       </div>
       <div>
-        <span className="font-display font-semibold">Descrição:</span>{" "}
+        <span className="font-display font-semibold">
+          {dictionary.homepage.myInfo.experience.description}:
+        </span>{" "}
         {descricao}
       </div>
     </div>
