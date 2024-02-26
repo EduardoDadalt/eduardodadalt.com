@@ -72,6 +72,10 @@ const en: Dictionary = {
       description:
         "Here are some of the technologies I have experience with and that I can use to develop solutions.",
     },
+    contact: {
+      title: "Contact",
+      youCanContactMeVia: "You can contact me via",
+    },
   },
   components: {
     cardLevel: {

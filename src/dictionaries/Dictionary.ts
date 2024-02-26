@@ -37,6 +37,10 @@ export type Dictionary = {
       title: string;
       description: string;
     };
+    contact: {
+      title: string;
+      youCanContactMeVia: string;
+    };
   };
   components: {
     cardLevel: {
