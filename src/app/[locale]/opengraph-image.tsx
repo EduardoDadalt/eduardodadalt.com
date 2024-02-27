@@ -17,16 +17,13 @@ export default async function OpenGraphImage({
 }) {
   const dictionary = await getDictionary(locale);
 
-  const [profilePic, montserratNormal, montserratBlack] = await Promise.all([
+  const [profilePic, montserrat] = await Promise.all([
     fetch(new URL("../../../public/images/profile.png", import.meta.url))
       .then((res) => res.arrayBuffer())
       .then((res) => Buffer.from(res).toString("base64").toString()),
-    fetch(
-      new URL("../../../public/font/Montserrat-Regular.ttf", import.meta.url),
-    ).then((res) => res.arrayBuffer()),
-    fetch(
-      new URL("../../../public/font/Montserrat-Black.ttf", import.meta.url),
-    ).then((res) => res.arrayBuffer()),
+    fetch(new URL("../../../public/font/Montserrat.ttf", import.meta.url)).then(
+      (res) => res.arrayBuffer(),
+    ),
   ]);
 
   return new ImageResponse(
@@ -76,13 +73,13 @@ export default async function OpenGraphImage({
       fonts: [
         {
           name: "Montserrat",
-          data: montserratNormal,
+          data: montserrat,
           style: "normal",
           weight: 400,
         },
         {
           name: "Montserrat",
-          data: montserratBlack,
+          data: montserrat,
           style: "normal",
           weight: 900,
         },
