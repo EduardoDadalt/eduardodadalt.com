@@ -6,6 +6,7 @@ import { AlertCircle } from "lucide-react";
 import { Metadata } from "next";
 import { getDictionary } from "@/dictionaries/dictionaries";
 import Contact from "@/components/sections/contact";
+import Solutions from "@/components/sections/solutions";
 
 export const revalidate = 86400;
 
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
   description:
     "Desenvolvedor Full Stack, apaixonado por tecnologia e inovação.",
 };
+
 export default async function Home({
   params: { locale },
 }: {
@@ -31,7 +33,7 @@ export default async function Home({
       {/* Tecnologias que utilizo */}
       <Technologies locale={locale} />
       {/* Soluções */}
-
+      <Solutions locale={locale} />
       {/* Repositorios */}
       <Contact locale={locale} />
       {/* Contato */}

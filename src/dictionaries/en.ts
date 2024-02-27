@@ -76,6 +76,12 @@ const en: Dictionary = {
       title: "Contact",
       youCanContactMeVia: "You can contact me via",
     },
+    solution: {
+      title: "Solutions",
+      solutions: [
+        
+      ],
+    },
   },
   components: {
     cardLevel: {

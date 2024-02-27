@@ -73,6 +73,33 @@ const pt: Dictionary = {
       description:
         "Aqui estão algumas das tecnologias que tenho experiência e que posso utilizar para desenvolver soluções.",
     },
+    solution: {
+      title: "Soluções",
+      solutions: [
+        {
+          title: "SAC integrado com WhatsApp",
+          description: "Utilizando Node.js, Flutter e MySQL",
+          content:
+            "Nesse projeto que trabalhei sozinho, desenvolvi um sistema de para atendimento de clientes unificando 6 WhatsApp em uma central única, onde os técnicos pode abrir chamados, visualizar o status dos chamados e conversar com os clientes via WhatsApp.",
+          languagesAndTechnologies: [
+            "/icons/technologies/node.js.svg",
+            "/icons/technologies/flutter.svg",
+            "/icons/technologies/mysql.svg",
+          ],
+        },
+        {
+          title: "SAC integrado com WhatsApp",
+          description: "Utilizando Node.js, Flutter e MySQL",
+          content:
+            "Nesse projeto que trabalhei sozinho, desenvolvi um sistema de para atendimento de clientes unificando 6 WhatsApp em uma central única, onde os técnicos pode abrir chamados, visualizar o status dos chamados e conversar com os clientes via WhatsApp.",
+          languagesAndTechnologies: [
+            "/icons/technologies/node.js.svg",
+            "/icons/technologies/flutter.svg",
+            "/icons/technologies/mysql.svg",
+          ],
+        },
+      ],
+    },
     contact: {
       title: "Contato",
       youCanContactMeVia: "Você pode entrar em contato comigo via",
