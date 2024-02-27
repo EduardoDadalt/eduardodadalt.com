@@ -1,6 +1,6 @@
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
-import type { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { LOCALES } from "./constants/locales";
 
 export const defaultLocale = "en";
@@ -28,7 +28,7 @@ export function middleware(request: NextRequest) {
   request.nextUrl.pathname = `/${locale}${pathname}`;
   // e.g. incoming request is /products
   // The new URL is now /en-US/products
-  return Response.redirect(request.nextUrl);
+  return NextResponse.redirect(request.nextUrl);
 }
 
 export const config = {
