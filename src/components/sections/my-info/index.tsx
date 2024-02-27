@@ -18,7 +18,7 @@ export default async function MyInfo({ locale }: { locale: string }) {
             alt="Imagem do Eduardo Dadalt"
             width={300}
             height={300}
-            className="size-24 rounded-full border shadow lg:size-32"
+            className="size-44 rounded-full border shadow lg:size-32"
           />
           <div className="space-y-2">
             <h1 className="text-xl">
