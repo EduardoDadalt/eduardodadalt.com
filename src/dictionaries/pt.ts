@@ -13,6 +13,12 @@ const pt: Dictionary = {
     contact: "Contato",
   },
   homepage: {
+    metadata: {
+      title: "Eduardo Dadalt - Desenvolvedor Full Stack",
+      description:
+        "Desenvolvedor Full Stack, apaixonado por tecnologia e inovação.",
+      siteName: "Eduardo Dadalt - Desenvolvedor Full Stack",
+    },
     pageOnConstruction: "Página em construção",
     myInfo: {
       hiMyNameIs: "Olá, meu nome é",

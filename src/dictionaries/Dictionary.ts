@@ -12,6 +12,11 @@ export type Dictionary = {
   };
 
   homepage: {
+    metadata: {
+      title: string;
+      description: string;
+      siteName: string;
+    };
     pageOnConstruction: string;
     myInfo: {
       hiMyNameIs: string;
