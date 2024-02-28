@@ -16,6 +16,7 @@ const technologies: Technology[] = [
   { name: "React Native", level: 2 },
   { name: "Docker", level: 2 },
   { name: "Azure Pipelines", level: 2 },
+  { name: "Puppeteer", level: 2 },
   { name: "Firebase", level: 2 },
   { name: "PostgreSQL", level: 1 },
   { name: "MySQL", level: 3 },
