@@ -38,12 +38,12 @@ export default async function Solutions({ locale }: { locale: string }) {
             index,
           ) => (
             <Card key={index} className="min-w-72">
-              <CardHeader className="flex flex-row justify-between">
+              <CardHeader className="flex flex-row justify-between gap-2">
                 <div>
                   <CardTitle>{title}</CardTitle>
                   <CardDescription>{description}</CardDescription>
                 </div>
-                <div className="flex flex-row gap-2">
+                <div className="!mt-0 flex flex-row flex-wrap justify-end gap-2">
                   {languagesAndTechnologies.map((url, index) => (
                     <Image
                       key={index}

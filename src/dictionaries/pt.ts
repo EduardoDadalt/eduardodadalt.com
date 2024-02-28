@@ -98,6 +98,15 @@ const pt: Dictionary = {
           languagesAndTechnologies: ["/icons/technologies/flutter.svg"],
         },
         {
+          title: "Site da empresa JR Sistemas",
+          description: "Utilizando React e NextJS",
+          content: "Refiz totalmente o site da empresa JR Sistemas",
+          languagesAndTechnologies: [
+            "/icons/technologies/react.svg",
+            "/icons/technologies/next.js.svg",
+          ],
+        },
+        {
           title: "SAC integrado com WhatsApp",
           description: "Utilizando Node.js, Flutter e MySQL",
           content:
