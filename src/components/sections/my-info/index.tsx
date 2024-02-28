@@ -5,6 +5,7 @@ import Image from "next/image";
 import Experience from "./experience";
 import "./style.css";
 import EducationStep from "./education-step";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default async function MyInfo({ locale }: { locale: string }) {
   const dictionary = await getDictionary(locale);
@@ -12,27 +13,29 @@ export default async function MyInfo({ locale }: { locale: string }) {
   return (
     <>
       <section>
-        <div className="flex flex-col items-center gap-4 rounded-2xl border bg-white p-4 text-center sm:flex-row">
-          <Image
-            src="/images/profile.png"
-            alt="Imagem do Eduardo Dadalt"
-            width={300}
-            height={300}
-            className="size-44 rounded-3xl shadow-lg"
-          />
+        <Card>
+          <CardContent className="flex flex-col items-center gap-4 p-4 text-center sm:flex-row">
+            <Image
+              src="/images/profile.png"
+              alt="Imagem do Eduardo Dadalt"
+              width={300}
+              height={300}
+              className="size-44 rounded-3xl shadow-lg"
+            />
 
-          <div className="space-y-2">
-            <h1 className="text-xl">
-              {dictionary.homepage.myInfo.hiMyNameIs}{" "}
-              <span className="fundo-gradient-texto whitespace-nowrap text-2xl font-bold">
-                Eduardo Dadalt
-              </span>
-            </h1>
-            <div className="text-justify indent-4">
-              <MDXRemote source={dictionary.homepage.myInfo.description} />
+            <div className="space-y-2">
+              <h1 className="text-xl">
+                {dictionary.homepage.myInfo.hiMyNameIs}{" "}
+                <span className="fundo-gradient-texto whitespace-nowrap text-2xl font-bold">
+                  Eduardo Dadalt
+                </span>
+              </h1>
+              <div className="text-justify indent-4">
+                <MDXRemote source={dictionary.homepage.myInfo.description} />
+              </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </section>
       <section className="space-y-4">
         <h2 className="flex flex-row gap-2 text-xl font-bold underline">

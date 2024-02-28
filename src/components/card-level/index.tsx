@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Level, { LevelType } from "./level";
 import { getDictionary } from "@/dictionaries/dictionaries";
+import { Card, CardContent } from "../ui/card";
 
 export default async function CardLevel({
   name,
@@ -31,28 +32,30 @@ export default async function CardLevel({
   };
 
   return (
-    <div className="flex min-w-[260px] break-inside-avoid flex-row items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-100 p-2 shadow dark:border-slate-800 dark:bg-slate-900">
-      <div className="flex items-center justify-center gap-2">
-        {!!icon && (
-          <Image
-            src={icon}
-            alt={iconAlt}
-            width={24}
-            height={24}
-            className="size-6"
-          />
-        )}
+    <Card className=" min-w-[260px] break-inside-avoid ">
+      <CardContent className="flex flex-row items-center justify-between gap-2 !p-2">
+        <div className="flex items-center justify-center gap-2">
+          {!!icon && (
+            <Image
+              src={icon}
+              alt={iconAlt}
+              width={24}
+              height={24}
+              className="size-6"
+            />
+          )}
 
-        <div>{name}</div>
-      </div>
-      <div className="flex flex-col">
-        <div className="mt-3 flex overflow-hidden rounded-lg">
-          <Level level={1} currentLevel={level} />
-          <Level level={2} currentLevel={level} />
-          <Level level={3} currentLevel={level} />
+          <div>{name}</div>
         </div>
-        <div className="text-xs">{getLevelLabel(level)}</div>
-      </div>
-    </div>
+        <div className="flex flex-col">
+          <div className="mt-3 flex overflow-hidden rounded-lg">
+            <Level level={1} currentLevel={level} />
+            <Level level={2} currentLevel={level} />
+            <Level level={3} currentLevel={level} />
+          </div>
+          <div className="text-xs">{getLevelLabel(level)}</div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
