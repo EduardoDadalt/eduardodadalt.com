@@ -4,7 +4,7 @@
 
 html,
 body {
-  @apply min-h-full w-full overflow-y-auto overflow-x-hidden;
+  @apply min-h-full w-full overflow-y-auto overflow-x-hidden dark:bg-primary-950;
 }
 
 body {

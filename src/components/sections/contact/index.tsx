@@ -5,7 +5,7 @@ import Link from "next/link";
 export default async function Contact({ locale }: { locale: string }) {
   const dictionary = await getDictionary(locale);
   return (
-    <section className="flex min-h-60 flex-col bg-primary-600 py-10 text-slate-50">
+    <section className="flex min-h-60 flex-col bg-primary-600 py-10 text-slate-50 dark:bg-primary-700">
       <h2 className="text-center text-4xl font-bold">
         {dictionary.homepage.contact.title}
       </h2>

@@ -28,7 +28,7 @@ export default async function Header({ locale }: { locale: string }) {
           eduardodadalt.com
         </Link>
       </div>
-      <header className="flex h-12 flex-row items-center  justify-between bg-opacity-50 bg-gradient-to-br from-primary-700 to-blue-500 p-2 text-gray-100 md:p-4 print:hidden">
+      <header className="flex h-12 flex-row items-center justify-between bg-opacity-50 bg-gradient-to-br from-primary-700 to-blue-500 p-2 text-gray-100 dark:from-primary-900 dark:to-blue-800 md:p-4 print:hidden">
         <Menu navItens={Links} />
         <Link href="/">
           <h1 className="font-display lg:text-lg">Eduardo Dadalt</h1>
