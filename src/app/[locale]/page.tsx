@@ -20,6 +20,14 @@ export async function generateMetadata({
     description: dictionary.homepage.metadata.description,
     openGraph: {
       siteName: "Eduardo Dadalt",
+      images: [
+        {
+          url: `https://www.eduardodadalt.com/${locale}/opengraph-image`,
+          height: 630,
+          width: 1200,
+          alt: "Hello, I'm Eduardo Dadalt 👋🏻",
+        },
+      ],
     },
   };
 }
