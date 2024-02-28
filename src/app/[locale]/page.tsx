@@ -1,12 +1,12 @@
 import Contact from "@/components/sections/contact";
 import MyInfo from "@/components/sections/my-info";
 import ProgrammingLanguages from "@/components/sections/programming-languages";
+import Solutions from "@/components/sections/solutions";
 import Technologies from "@/components/sections/technology";
 import { getDictionary } from "@/dictionaries/dictionaries";
 import "@/styles/homepage.css";
 import { AlertCircle } from "lucide-react";
 import { Metadata } from "next";
-import Solutions from "@/components/sections/solutions";
 
 export const revalidate = 86400;
 

@@ -28,6 +28,9 @@ export default async function Solutions({ locale }: { locale: string }) {
       <h2 className="text-2xl font-bold">
         {dictionary.homepage.solution.title}
       </h2>
+      <p className="text-gray-500">
+        {dictionary.homepage.solution.description}
+      </p>
       <div className="flex flex-wrap gap-2 *:flex-1">
         {dictionary.homepage.solution.solutions.map(
           (

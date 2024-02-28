@@ -44,6 +44,7 @@ export type Dictionary = {
     };
     solution: {
       title: string;
+      description: string;
       solutions: Solution[];
     };
     contact: {

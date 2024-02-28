@@ -83,9 +83,9 @@ const en: Dictionary = {
     },
     solution: {
       title: "Solutions",
-      solutions: [
-        
-      ],
+      description:
+        "Here are some of the solutions I have developed or actively participated in the development.",
+      solutions: [],
     },
   },
   components: {
