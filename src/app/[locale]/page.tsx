@@ -19,7 +19,7 @@ export async function generateMetadata({
     title: dictionary.homepage.metadata.title,
     description: dictionary.homepage.metadata.description,
     openGraph: {
-      siteName: dictionary.homepage.metadata.siteName,
+      siteName: "Eduardo Dadalt",
     },
   };
 }

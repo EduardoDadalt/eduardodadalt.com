@@ -15,7 +15,6 @@ export type Dictionary = {
     metadata: {
       title: string;
       description: string;
-      siteName: string;
     };
     pageOnConstruction: string;
     myInfo: {

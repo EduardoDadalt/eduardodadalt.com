@@ -17,7 +17,6 @@ const en: Dictionary = {
       title: "Eduardo Dadalt - Full Stack Developer",
       description:
         "Full Stack Developer, passionate about technology and innovation.",
-      siteName: "Eduardo Dadalt - Full Stack Developer",
     },
     pageOnConstruction: "Page under construction",
     myInfo: {
