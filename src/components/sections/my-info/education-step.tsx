@@ -24,8 +24,8 @@ export default async function EducationStep({
     <div>
       <div className="flex flex-row items-center justify-between gap-4">
         <h3 className="text-lg font-bold">{course}</h3>
-        <p className="whitespace-nowrap text-xs">
-          {dateBegin} - {dateEnd}
+        <p className="text-xs *:whitespace-nowrap">
+          <span>{dateBegin}</span> - <span>{dateEnd}</span>
         </p>
       </div>
       <p>

@@ -13,6 +13,11 @@ const en: Dictionary = {
     contact: "Contact",
   },
   homepage: {
+    metadata: {
+      title: "Eduardo Dadalt - Full Stack Developer",
+      description:
+        "Full Stack Developer, passionate about technology and innovation.",
+    },
     pageOnConstruction: "Page under construction",
     myInfo: {
       hiMyNameIs: "Hi, my name is",

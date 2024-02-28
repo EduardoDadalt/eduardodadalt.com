@@ -15,75 +15,74 @@ export default async function OpenGraphImage({
 }: {
   params: { locale: string };
 }) {
-  const dictionary = await getDictionary(locale);
+  try {
+    const dictionary = await getDictionary(locale);
 
-  const [profilePic, montserrat] = await Promise.all([
-    fetch(new URL("../../../public/images/profile.png", import.meta.url))
-      .then((res) => res.arrayBuffer())
-      .then((res) => Buffer.from(res).toString("base64").toString()),
-    fetch(new URL("../../../public/font/Montserrat.ttf", import.meta.url)).then(
-      (res) => res.arrayBuffer(),
-    ),
-  ]);
+    const [profilePic, montserratRegular] = await Promise.all([
+      fetch(new URL("../../../public/images/profile.png", import.meta.url))
+        .then((res) => res.arrayBuffer())
+        .then((res) => Buffer.from(res).toString("base64").toString()),
+      fetch(
+        new URL("../../../public/font/Montserrat-Regular.ttf", import.meta.url),
+      ).then((res) => res.arrayBuffer()),
+    ]);
 
-  return new ImageResponse(
-    (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: 30,
-          alignItems: "center",
-          justifyContent: "center",
-          width: size.width,
-          height: size.height,
-          background:
-            "linear-gradient(to bottom right, #4338ca 0%, #3b82f6 100%)",
-          fontSize: "2rem",
-          color: "white",
-          textShadow: "1px 1px 10px black",
-          fontWeight: 400,
-        }}
-      >
-        <img
-          src={`data:image/png;base64,${profilePic}`}
-          alt="Minha imagem"
-          width={300}
-          height={300}
+    return new ImageResponse(
+      (
+        <div
           style={{
-            borderRadius: "50%",
-            boxShadow: "0px 10px 10px rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            flexDirection: "row",
+            gap: 30,
+            alignItems: "center",
+            justifyContent: "center",
+            width: size.width,
+            height: size.height,
+            background:
+              "linear-gradient(to bottom right, #4338ca 0%, #3b82f6 100%)",
+            fontSize: "2rem",
+            color: "white",
+            textShadow: "1px 1px 10px black",
+            fontWeight: 400,
+            fontFamily: "Montserrat",
           }}
-        />
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <span>{dictionary.homepage.myInfo.hiMyNameIs} </span>
-          <span
+        >
+          <img
+            src={`data:image/png;base64,${profilePic}`}
+            alt="Minha imagem"
+            width={300}
+            height={300}
             style={{
-              fontWeight: 900,
-              fontSize: "5rem",
+              borderRadius: "50%",
+              boxShadow: "0px 10px 10px rgba(0, 0, 0, 0.5)",
             }}
-          >
-            Eduardo Dadalt 👋🏻
-          </span>
+          />
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span>{dictionary.homepage.myInfo.hiMyNameIs} </span>
+            <span
+              style={{
+                fontWeight: 900,
+                fontSize: "5rem",
+              }}
+            >
+              Eduardo Dadalt 👋🏻
+            </span>
+          </div>
         </div>
-      </div>
-    ),
-    {
-      ...size,
-      fonts: [
-        {
-          name: "Montserrat",
-          data: montserrat,
-          style: "normal",
-          weight: 400,
-        },
-        {
-          name: "Montserrat",
-          data: montserrat,
-          style: "normal",
-          weight: 900,
-        },
-      ],
-    },
-  );
+      ),
+      {
+        ...size,
+        fonts: [
+          {
+            name: "Montserrat",
+            data: montserratRegular,
+            style: "normal",
+            weight: 400,
+          },
+        ],
+      },
+    );
+  } catch (error: any) {
+    return new Response(error, { status: 500 });
+  }
 }

@@ -1,20 +1,37 @@
-import ProgrammingLanguages from "@/components/sections/programming-languages";
+import Contact from "@/components/sections/contact";
 import MyInfo from "@/components/sections/my-info";
-import "@/styles/homepage.css";
+import ProgrammingLanguages from "@/components/sections/programming-languages";
 import Technologies from "@/components/sections/technology";
+import { getDictionary } from "@/dictionaries/dictionaries";
+import "@/styles/homepage.css";
 import { AlertCircle } from "lucide-react";
 import { Metadata } from "next";
-import { getDictionary } from "@/dictionaries/dictionaries";
-import Contact from "@/components/sections/contact";
 import Solutions from "@/components/sections/solutions";
 
 export const revalidate = 86400;
 
-export const metadata: Metadata = {
-  title: "Eduardo Dadalt - Desenvolvedor Full Stack",
-  description:
-    "Desenvolvedor Full Stack, apaixonado por tecnologia e inovação.",
-};
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: string };
+}): Promise<Metadata> {
+  const dictionary = await getDictionary(locale);
+  return {
+    title: dictionary.homepage.metadata.title,
+    description: dictionary.homepage.metadata.description,
+    openGraph: {
+      siteName: "Eduardo Dadalt",
+      images: [
+        {
+          url: `https://www.eduardodadalt.com/${locale}/opengraph-image`,
+          height: 630,
+          width: 1200,
+          alt: "Hello, I'm Eduardo Dadalt 👋🏻",
+        },
+      ],
+    },
+  };
+}
 
 export default async function Home({
   params: { locale },

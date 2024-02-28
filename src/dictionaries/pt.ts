@@ -13,6 +13,11 @@ const pt: Dictionary = {
     contact: "Contato",
   },
   homepage: {
+    metadata: {
+      title: "Eduardo Dadalt - Desenvolvedor Full Stack",
+      description:
+        "Desenvolvedor Full Stack, apaixonado por tecnologia e inovação.",
+    },
     pageOnConstruction: "Página em construção",
     myInfo: {
       hiMyNameIs: "Olá, meu nome é",
@@ -49,7 +54,7 @@ const pt: Dictionary = {
             institution: "FIAP",
             course: "Análise e Desenvolvimento de Sistemas",
             dateBegin: "Fev de 2023",
-            dateEnd: "Até o momento",
+            dateEnd: "Atualmente",
             description: "Em andamento",
           },
           {

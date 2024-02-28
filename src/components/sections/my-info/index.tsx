@@ -12,18 +12,19 @@ export default async function MyInfo({ locale }: { locale: string }) {
   return (
     <>
       <section>
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-col items-center gap-4 rounded-2xl border bg-white p-4 text-center sm:flex-row">
           <Image
             src="/images/profile.png"
             alt="Imagem do Eduardo Dadalt"
             width={300}
             height={300}
-            className="size-44 rounded-full border shadow lg:size-32"
+            className="size-44 rounded-3xl shadow-lg"
           />
+
           <div className="space-y-2">
             <h1 className="text-xl">
               {dictionary.homepage.myInfo.hiMyNameIs}{" "}
-              <span className="fundo-gradient-texto text-2xl font-bold">
+              <span className="fundo-gradient-texto whitespace-nowrap text-2xl font-bold">
                 Eduardo Dadalt
               </span>
             </h1>
