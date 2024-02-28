@@ -54,7 +54,7 @@ const pt: Dictionary = {
             institution: "FIAP",
             course: "Análise e Desenvolvimento de Sistemas",
             dateBegin: "Fev de 2023",
-            dateEnd: "Até o momento",
+            dateEnd: "Atualmente",
             description: "Em andamento",
           },
           {
