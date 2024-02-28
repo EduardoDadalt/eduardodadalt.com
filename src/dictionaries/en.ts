@@ -81,6 +81,69 @@ const en: Dictionary = {
       title: "Contact",
       youCanContactMeVia: "You can contact me via",
     },
+    solution: {
+      title: "Solutions",
+      description:
+        "Here are some of the solutions I have developed or actively participated in the development.",
+      solutions: [
+        {
+          title: "ERP App for Small Businesses",
+          description: "Using Flutter (Frontend)",
+          content:
+            "We started migrating the legacy system to Flutter. I took care of the beginning of this migration, creating dashboards, reports, and registration forms.",
+          languagesAndTechnologies: ["/icons/technologies/flutter.svg"],
+        },
+        {
+          title: "App for Waiters to Place Orders",
+          description: "Using Flutter (Frontend)",
+          content:
+            "I worked on a system for waiters to place orders, where the waiter can view tables, place orders, and check the status of orders.",
+          languagesAndTechnologies: ["/icons/technologies/flutter.svg"],
+        },
+        {
+          title: "JR Sistemas Company Website",
+          description: "Using React and NextJS",
+          content: "Completely redesigned the website for JR Sistemas company.",
+          languagesAndTechnologies: [
+            "/icons/technologies/react.svg",
+            "/icons/technologies/next.js.svg",
+          ],
+        },
+        {
+          title: "Customer Service Integrated with WhatsApp",
+          description: "Using Node.js, Flutter, and MySQL",
+          content:
+            "Developed a complete system for customer service, unifying 6 WhatsApp accounts into a single center, where technicians can open tickets, view ticket status, and converse with customers via WhatsApp.",
+          languagesAndTechnologies: [
+            "/icons/technologies/node.js.svg",
+            "/icons/technologies/flutter.svg",
+            "/icons/technologies/mysql.svg",
+          ],
+        },
+        {
+          title: "Mobile Kitchen Display System (KDS)",
+          description: "Using Node.js, Electron, ReactNative, and MsSQL",
+          content:
+            "Developed a complete integration with the TOTVS Chef system for managing orders in the kitchen, where cooks can view orders and mark them as ready, and the waiter can view the status of the order and deliver it to the customer.",
+          languagesAndTechnologies: [
+            "/icons/technologies/node.js.svg",
+            "/icons/technologies/electron.svg",
+            "/icons/technologies/react.svg",
+            "/icons/technologies/mssql.svg",
+          ],
+        },
+        {
+          title: "Process Automation",
+          description: "Using Node.js, Puppeteer",
+          content:
+            "Developed automations to optimize processes, such as automatically downloading NFC-e from SC and checking ticket responses.",
+          languagesAndTechnologies: [
+            "/icons/technologies/node.js.svg",
+            "/icons/technologies/puppeteer.svg",
+          ],
+        },
+      ],
+    },
   },
   components: {
     cardLevel: {

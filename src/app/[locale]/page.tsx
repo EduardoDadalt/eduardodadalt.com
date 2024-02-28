@@ -1,6 +1,7 @@
 import Contact from "@/components/sections/contact";
 import MyInfo from "@/components/sections/my-info";
 import ProgrammingLanguages from "@/components/sections/programming-languages";
+import Solutions from "@/components/sections/solutions";
 import Technologies from "@/components/sections/technology";
 import { getDictionary } from "@/dictionaries/dictionaries";
 import "@/styles/homepage.css";
@@ -49,7 +50,7 @@ export default async function Home({
       {/* Tecnologias que utilizo */}
       <Technologies locale={locale} />
       {/* Soluções */}
-
+      <Solutions locale={locale} />
       {/* Repositorios */}
       <Contact locale={locale} />
       {/* Contato */}

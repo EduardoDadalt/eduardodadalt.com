@@ -1,5 +1,6 @@
 import { EducationStepType } from "@/components/sections/my-info/education-step";
 import { Experience } from "@/components/sections/my-info/experience";
+import { Solution } from "@/components/sections/solutions";
 
 export type Dictionary = {
   header: {
@@ -40,6 +41,11 @@ export type Dictionary = {
     technology: {
       title: string;
       description: string;
+    };
+    solution: {
+      title: string;
+      description: string;
+      solutions: Solution[];
     };
     contact: {
       title: string;
