@@ -23,7 +23,7 @@ export default async function MyInfo({ locale }: { locale: string }) {
               className="size-44 rounded-3xl shadow-lg"
             />
 
-            <div className="space-y-2">
+            <div className="mx-auto space-y-2 *:max-w-md">
               <h1 className="text-xl">
                 {dictionary.homepage.myInfo.hiMyNameIs}{" "}
                 <span className="fundo-gradient-texto whitespace-nowrap text-2xl font-bold">
