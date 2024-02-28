@@ -16,18 +16,18 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const dictionary = await getDictionary(locale);
   return {
+    metadataBase: new URL("https://eduardodadalt.com"),
+    alternates: {
+      canonical: "/",
+      languages: {
+        en: "/en",
+        pt: "/pt",
+      },
+    },
     title: dictionary.homepage.metadata.title,
     description: dictionary.homepage.metadata.description,
     openGraph: {
       siteName: "Eduardo Dadalt",
-      images: [
-        {
-          url: `https://www.eduardodadalt.com/${locale}/opengraph-image`,
-          height: 630,
-          width: 1200,
-          alt: "Hello, I'm Eduardo Dadalt 👋🏻",
-        },
-      ],
     },
   };
 }
