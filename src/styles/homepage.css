@@ -1,5 +1,5 @@
 section {
-  @apply mt-8 space-y-2 px-4 sm:px-8 md:px-12 lg:*:mx-auto lg:*:max-w-4xl;
+  @apply mt-8 space-y-2 px-6 sm:px-8 md:px-12 lg:*:mx-auto lg:*:max-w-4xl;
 }
 
 body {
