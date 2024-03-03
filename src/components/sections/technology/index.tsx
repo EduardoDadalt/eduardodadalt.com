@@ -36,7 +36,7 @@ export default async function Technologies({ locale }: { locale: string }) {
       <h2 className="text-2xl font-bold">
         {dictionary.homepage.technology.title}
       </h2>
-      <p className="text-gray-500">
+      <p className="text-gray-500 dark:text-gray-300">
         {dictionary.homepage.technology.description}
       </p>
       <div className="flex flex-row flex-wrap gap-2 *:flex-1 ">

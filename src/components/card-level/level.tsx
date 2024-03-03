@@ -13,11 +13,11 @@ export default function Level({
     if (currentLevel < level) return "bg-gray-300";
     switch (level) {
       case 1:
-        return "bg-green-500 dark:bg-green-600";
+        return "bg-green-500";
       case 2:
-        return "bg-amber-500 dark:bg-amber-600";
+        return "bg-amber-500";
       case 3:
-        return "bg-rose-500 dark:bg-rose-600";
+        return "bg-rose-500";
     }
   };
   return <div className={cn("h-2 min-w-10", getColor())} />;

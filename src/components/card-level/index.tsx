@@ -41,7 +41,7 @@ export default async function CardLevel({
               alt={iconAlt}
               width={24}
               height={24}
-              className="size-6"
+              className="size-8 rounded-lg bg-gray-100 p-1 shadow-sm"
             />
           )}
 

@@ -4,13 +4,17 @@
 
 html,
 body {
-  @apply min-h-full w-full overflow-y-auto overflow-x-hidden dark:bg-primary-950;
+  @apply min-h-full w-full overflow-y-auto overflow-x-hidden;
 }
 
 body {
   @apply flex flex-col antialiased;
   -webkit-print-color-adjust: exact !important;
   print-color-adjust: exact !important;
+}
+
+main {
+  @apply dark:bg-primary-950;
 }
 
 * {
@@ -30,6 +34,7 @@ h6 {
 main a {
   @apply text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300;
 }
+
 @page {
   margin: 0;
 }
