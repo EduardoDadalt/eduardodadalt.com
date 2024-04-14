@@ -1,3 +1,4 @@
+import Section from "@/components/section";
 import {
   Card,
   CardContent,
@@ -24,13 +25,10 @@ export default async function Solutions({ locale }: { locale: string }) {
   const dictionary = await getDictionary(locale);
 
   return (
-    <section>
-      <h2 className="text-2xl font-bold">
-        {dictionary.homepage.solution.title}
-      </h2>
-      <p className="text-gray-500 dark:text-gray-300">
-        {dictionary.homepage.solution.description}
-      </p>
+    <Section
+      title={dictionary.homepage.solution.title}
+      description={dictionary.homepage.solution.description}
+    >
       <div className="flex flex-wrap gap-2 *:flex-1">
         {dictionary.homepage.solution.solutions.map(
           (
@@ -63,6 +61,6 @@ export default async function Solutions({ locale }: { locale: string }) {
           ),
         )}
       </div>
-    </section>
+    </Section>
   );
 }
