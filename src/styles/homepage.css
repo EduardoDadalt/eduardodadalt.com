@@ -1,8 +1,0 @@
-section {
-  @apply mt-8 space-y-2 px-6 sm:px-8 md:px-12 lg:*:mx-auto lg:*:max-w-4xl;
-}
-
-body {
-  /* @apply bg-gradient-to-b from-primary-700 to-blue-500/10 bg-no-repeat; */
-  background-size: 100% 100%;
-}

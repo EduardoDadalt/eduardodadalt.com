@@ -1,7 +1,7 @@
-import { Github, Linkedin } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { Button, ButtonProps } from "../ui/button";
+import { GithubIcon, LinkedinIcon } from "../icons/brand";
 
 type SocialNetwork = "github" | "linkedin";
 
@@ -9,33 +9,32 @@ type ButtonSocialNetworkProps = ButtonProps & {
   socialNetwork: SocialNetwork;
 };
 
+const SOCIAL: Record<
+  SocialNetwork,
+  { url: string; label: string; icon: ReactNode }
+> = {
+  github: {
+    url: "https://github.com/EduardoDadalt",
+    label: "GitHub",
+    icon: <GithubIcon className="size-5" />,
+  },
+  linkedin: {
+    url: "https://www.linkedin.com/in/eduardo-dadalt/",
+    label: "LinkedIn",
+    icon: <LinkedinIcon className="size-5" />,
+  },
+};
+
 export default function ButtonSocialNetwork({
   socialNetwork,
   ...props
 }: ButtonSocialNetworkProps) {
-  const defaultSize = 20;
-  const getUrlByType = (socialNetwork: SocialNetwork): string => {
-    switch (socialNetwork) {
-      case "github":
-        return "https://github.com/EduardoDadalt";
-      case "linkedin":
-        return "https://www.linkedin.com/in/eduardo-dadalt/";
-    }
-  };
-  const getIconByType = (socialNetwork: SocialNetwork): ReactNode => {
-    switch (socialNetwork) {
-      case "github":
-        return <Github size={defaultSize} />;
-
-      case "linkedin":
-        return <Linkedin size={defaultSize} />;
-    }
-  };
+  const { url, label, icon } = SOCIAL[socialNetwork];
 
   return (
-    <Button asChild variant="outline" className="p-2">
-      <Link href={getUrlByType(socialNetwork)} target="_blank">
-        {getIconByType(socialNetwork)}
+    <Button asChild variant="outline" size="icon" {...props}>
+      <Link href={url} target="_blank" rel="noopener noreferrer" aria-label={label}>
+        {icon}
       </Link>
     </Button>
   );

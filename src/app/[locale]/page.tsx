@@ -1,59 +1,60 @@
-import Contact from "@/components/sections/contact";
-import MyInfo from "@/components/sections/my-info";
-import ProgrammingLanguages from "@/components/sections/programming-languages";
-import Solutions from "@/components/sections/solutions";
-import Technologies from "@/components/sections/technology";
-import { getDictionary } from "@/dictionaries/dictionaries";
-import "@/styles/homepage.css";
-import { AlertCircle } from "lucide-react";
 import { Metadata } from "next";
+
+import { getMessages } from "@/i18n";
+import { profile } from "@/content/resume";
+import PrintHeader from "@/components/print-header";
+import Hero from "@/components/sections/hero";
+import About from "@/components/sections/about";
+import Experience from "@/components/sections/experience";
+import Education from "@/components/sections/education";
+import Skills from "@/components/sections/skills";
+import Work from "@/components/sections/work";
+import Contact from "@/components/sections/contact";
 
 export const revalidate = 86400;
 
 export async function generateMetadata({
-  params: { locale },
+  params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const dictionary = await getDictionary(locale);
+  const { locale } = await params;
+  const t = getMessages(locale);
   return {
-    metadataBase: new URL("https://eduardodadalt.com"),
+    metadataBase: new URL(profile.siteUrl),
     alternates: {
-      canonical: "/",
-      languages: {
-        en: "/en",
-        pt: "/pt",
-      },
+      canonical: `/${locale}`,
+      languages: { en: "/en", pt: "/pt" },
     },
-    title: dictionary.homepage.metadata.title,
-    description: dictionary.homepage.metadata.description,
+    title: t.metadata.title,
+    description: t.metadata.description,
     openGraph: {
-      siteName: "Eduardo Dadalt",
+      siteName: profile.name,
+      title: t.metadata.title,
+      description: t.metadata.description,
+      url: `/${locale}`,
+      type: "website",
     },
   };
 }
 
 export default async function Home({
-  params: { locale },
+  params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
-  const dictionary = await getDictionary(locale);
+  const { locale } = await params;
+
   return (
-    <div>
-      <div className="flex flex-row items-center justify-center gap-2 bg-amber-300 p-16 text-2xl text-amber-950">
-        <AlertCircle /> {dictionary.homepage.pageOnConstruction}
-      </div>
-      <MyInfo locale={locale} />
-      {/* Linguagens de Programação */}
-      <ProgrammingLanguages locale={locale} />
-      {/* Tecnologias que utilizo */}
-      <Technologies locale={locale} />
-      {/* Soluções */}
-      <Solutions locale={locale} />
-      {/* Repositorios */}
+    <>
+      <PrintHeader locale={locale} />
+      <Hero locale={locale} />
+      <About locale={locale} />
+      <Experience locale={locale} />
+      <Education locale={locale} />
+      <Skills locale={locale} />
+      <Work locale={locale} />
       <Contact locale={locale} />
-      {/* Contato */}
-    </div>
+    </>
   );
 }
