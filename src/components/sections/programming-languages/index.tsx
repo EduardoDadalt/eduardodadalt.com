@@ -47,11 +47,13 @@ export default async function ProgrammingLanguages({
 }) {
   const dictionary = await getDictionary(locale);
   return (
-    <section id="linguagens">
-      <h2 className="text-2xl font-bold">
-        {dictionary.homepage.programmingLanguage.title}
-      </h2>
-      <div className="flex flex-row flex-wrap gap-2 *:flex-1 ">
+    <section className="section-shell" id="linguagens">
+      <div className="section-heading">
+        <p>{dictionary.header.languages}</p>
+        <h2>{dictionary.homepage.programmingLanguage.title}</h2>
+        <span>{dictionary.homepage.programmingLanguage.description}</span>
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 print:grid-cols-4">
         {programmingLanguages.map((language, index) => (
           <CardLevel
             key={index}

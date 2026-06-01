@@ -10,15 +10,15 @@ export default function Level({
   currentLevel: LevelType;
 }) {
   const getColor = (): string => {
-    if (currentLevel < level) return "bg-gray-300";
+    if (currentLevel < level) return "bg-slate-200 dark:bg-slate-800";
     switch (level) {
       case 1:
-        return "bg-green-500";
+        return "bg-sky-400";
       case 2:
-        return "bg-amber-500";
+        return "bg-primary-500";
       case 3:
-        return "bg-rose-500";
+        return "bg-violet-600";
     }
   };
-  return <div className={cn("h-2 min-w-10", getColor())} />;
+  return <div className={cn("h-2 min-w-8 rounded-full", getColor())} />;
 }

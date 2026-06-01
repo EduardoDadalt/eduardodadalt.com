@@ -1,7 +1,8 @@
 import type { Config } from "tailwindcss";
-import { indigo } from "tailwindcss/colors";
+import colors from "tailwindcss/colors";
+
 const config = {
-  darkMode: ["class"],
+  darkMode: "class",
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -32,14 +33,14 @@ const config = {
           to: { height: "0" },
         },
       },
-      colors: { primary: indigo },
+      colors: { primary: colors.indigo },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 } satisfies Config;
 
 export default config;

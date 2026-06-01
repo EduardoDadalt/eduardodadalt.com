@@ -6,16 +6,16 @@ export const size = {
   width: 1200,
   height: 630,
 };
-export const runtime = "edge";
 
 export const contentType = "image/png";
 
 export default async function OpenGraphImage({
-  params: { locale },
+  params,
 }: {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
   try {
+    const { locale } = await params;
     const dictionary = await getDictionary(locale);
 
     const [profilePic, montserratRegular] = await Promise.all([
@@ -28,48 +28,46 @@ export default async function OpenGraphImage({
     ]);
 
     return new ImageResponse(
-      (
-        <div
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: 30,
+          alignItems: "center",
+          justifyContent: "center",
+          width: size.width,
+          height: size.height,
+          background:
+            "linear-gradient(to bottom right, #4338ca 0%, #3b82f6 100%)",
+          fontSize: "2rem",
+          color: "white",
+          textShadow: "1px 1px 10px black",
+          fontWeight: 400,
+          fontFamily: "Montserrat",
+        }}
+      >
+        <img
+          src={`data:image/png;base64,${profilePic}`}
+          alt="Minha imagem"
+          width={300}
+          height={300}
           style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 30,
-            alignItems: "center",
-            justifyContent: "center",
-            width: size.width,
-            height: size.height,
-            background:
-              "linear-gradient(to bottom right, #4338ca 0%, #3b82f6 100%)",
-            fontSize: "2rem",
-            color: "white",
-            textShadow: "1px 1px 10px black",
-            fontWeight: 400,
-            fontFamily: "Montserrat",
+            borderRadius: "50%",
+            boxShadow: "0px 10px 10px rgba(0, 0, 0, 0.5)",
           }}
-        >
-          <img
-            src={`data:image/png;base64,${profilePic}`}
-            alt="Minha imagem"
-            width={300}
-            height={300}
+        />
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <span>{dictionary.homepage.myInfo.hiMyNameIs} </span>
+          <span
             style={{
-              borderRadius: "50%",
-              boxShadow: "0px 10px 10px rgba(0, 0, 0, 0.5)",
+              fontWeight: 900,
+              fontSize: "5rem",
             }}
-          />
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <span>{dictionary.homepage.myInfo.hiMyNameIs} </span>
-            <span
-              style={{
-                fontWeight: 900,
-                fontSize: "5rem",
-              }}
-            >
-              Eduardo Dadalt 👋🏻
-            </span>
-          </div>
+          >
+            Eduardo Dadalt 👋🏻
+          </span>
         </div>
-      ),
+      </div>,
       {
         ...size,
         fonts: [
