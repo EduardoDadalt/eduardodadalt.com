@@ -1,6 +1,26 @@
-import { EducationStepType } from "@/components/sections/my-info/education-step";
-import { Experience } from "@/components/sections/my-info/experience";
-import { Solution } from "@/components/sections/solutions";
+export type Experience = {
+  company: string;
+  dateBegin: string;
+  dateEnd: string;
+  position: string;
+  description: string;
+  highlights: string[];
+};
+
+export type EducationStepType = {
+  institution: string;
+  course: string;
+  description: string;
+  dateBegin: string;
+  dateEnd: string;
+};
+
+export type Solution = {
+  title: string;
+  description: string;
+  content: string;
+  languagesAndTechnologies: string[];
+};
 
 export type Dictionary = {
   header: {
@@ -20,11 +40,22 @@ export type Dictionary = {
     pageOnConstruction: string;
     myInfo: {
       hiMyNameIs: string;
+      role: string;
+      location: string;
+      availability: string;
       description: string;
+      strengthsTitle: string;
+      strengths: string[];
+      stats: {
+        value: string;
+        label: string;
+      }[];
       experience: {
         title: string;
+        eyebrow: string;
         position: string;
         description: string;
+        highlights: string;
         jobs: Experience[];
       };
       education: {
@@ -36,6 +67,7 @@ export type Dictionary = {
     };
     programmingLanguage: {
       title: string;
+      description: string;
       iconOf: string;
     };
     technology: {
@@ -49,7 +81,11 @@ export type Dictionary = {
     };
     contact: {
       title: string;
+      description: string;
       youCanContactMeVia: string;
+      email: string;
+      linkedin: string;
+      github: string;
     };
   };
   components: {

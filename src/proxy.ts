@@ -1,19 +1,19 @@
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 import { NextResponse, type NextRequest } from "next/server";
-import { LOCALES } from "./constants/locales";
-
-export const defaultLocale = "en";
+import { DEFAULT_LOCALE, LOCALES } from "./constants/locales";
 
 function getLocale(request: Request) {
   const acceptedLanguage = request.headers.get("accept-language") ?? undefined;
   const headers = { "accept-language": acceptedLanguage };
-  const languages = new Negotiator({ headers: headers }).languages(LOCALES);
+  const languages = new Negotiator({ headers: headers }).languages([
+    ...LOCALES,
+  ]);
 
-  return match(languages, LOCALES, defaultLocale);
+  return match(languages, [...LOCALES], DEFAULT_LOCALE);
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   // Check if there is any supported locale in the pathname
   const { pathname } = request.nextUrl;
   const pathnameHasLocale = LOCALES.some(

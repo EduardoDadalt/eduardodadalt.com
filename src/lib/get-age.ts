@@ -1,7 +1,7 @@
 export default function getAge(): number {
-  return (
-    new Date().getFullYear() -
-    2002 -
-    (new Date().getMonth() > 6 && new Date().getDate() >= 10 ? 0 : 1)
-  );
+  const today = new Date();
+  const birthdayHasPassed =
+    today.getMonth() > 6 || (today.getMonth() === 6 && today.getDate() >= 10);
+
+  return today.getFullYear() - 2002 - (birthdayHasPassed ? 0 : 1);
 }

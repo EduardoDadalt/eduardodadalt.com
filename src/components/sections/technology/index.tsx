@@ -32,14 +32,13 @@ const technologies: Technology[] = [
 export default async function Technologies({ locale }: { locale: string }) {
   const dictionary = await getDictionary(locale);
   return (
-    <section id="tecnologias">
-      <h2 className="text-2xl font-bold">
-        {dictionary.homepage.technology.title}
-      </h2>
-      <p className="text-gray-500 dark:text-gray-300">
-        {dictionary.homepage.technology.description}
-      </p>
-      <div className="flex flex-row flex-wrap gap-2 *:flex-1 ">
+    <section className="section-shell" id="tecnologias">
+      <div className="section-heading">
+        <p>{dictionary.header.technologies}</p>
+        <h2>{dictionary.homepage.technology.title}</h2>
+        <span>{dictionary.homepage.technology.description}</span>
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 print:grid-cols-3">
         {technologies.map((technology, index) => (
           <CardLevel
             key={index}

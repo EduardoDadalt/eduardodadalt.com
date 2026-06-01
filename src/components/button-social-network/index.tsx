@@ -1,4 +1,4 @@
-import { Github, Linkedin } from "lucide-react";
+import { GitHubLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { Button, ButtonProps } from "../ui/button";
@@ -22,19 +22,38 @@ export default function ButtonSocialNetwork({
         return "https://www.linkedin.com/in/eduardo-dadalt/";
     }
   };
+  const getLabelByType = (socialNetwork: SocialNetwork): string => {
+    switch (socialNetwork) {
+      case "github":
+        return "GitHub";
+      case "linkedin":
+        return "LinkedIn";
+    }
+  };
   const getIconByType = (socialNetwork: SocialNetwork): ReactNode => {
     switch (socialNetwork) {
       case "github":
-        return <Github size={defaultSize} />;
+        return <GitHubLogoIcon width={defaultSize} height={defaultSize} />;
 
       case "linkedin":
-        return <Linkedin size={defaultSize} />;
+        return <LinkedInLogoIcon width={defaultSize} height={defaultSize} />;
     }
   };
 
   return (
-    <Button asChild variant="outline" className="p-2">
-      <Link href={getUrlByType(socialNetwork)} target="_blank">
+    <Button
+      asChild
+      variant="outline"
+      size="icon"
+      className="rounded-full bg-white/80"
+      {...props}
+    >
+      <Link
+        href={getUrlByType(socialNetwork)}
+        target="_blank"
+        aria-label={getLabelByType(socialNetwork)}
+        title={getLabelByType(socialNetwork)}
+      >
         {getIconByType(socialNetwork)}
       </Link>
     </Button>

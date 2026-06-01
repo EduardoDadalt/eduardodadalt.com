@@ -5,6 +5,7 @@ import "@/styles/globals.css";
 import { Providers } from "./providers";
 import { LOCALES } from "@/constants/locales";
 import { Analytics } from "@vercel/analytics/react";
+import { Metadata } from "next";
 
 const FontDisplay = Montserrat({
   subsets: ["latin"],
@@ -17,17 +18,23 @@ const FontBody = Open_Sans({
   variable: "--font-body",
 });
 
+export const metadata: Metadata = {
+  metadataBase: new URL("https://eduardodadalt.com"),
+};
+
 export async function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }));
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-  params: { locale },
+  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }>) {
+  const { locale } = await params;
+
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
