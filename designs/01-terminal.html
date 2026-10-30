@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Design 01 · Terminal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0b0f0c; --panel: #111713; --line: #1f2a22;
+    --fg: #c9d6cc; --dim: #6b7d70; --green: #4ade80; --amber: #fbbf24; --cyan: #67e8f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--fg); font: 15px/1.7 "JetBrains Mono", ui-monospace, Consolas, monospace; }
+  a { color: var(--green); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+  header { position: sticky; top: 0; background: rgba(11,15,12,.85); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); z-index: 10; }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  .logo { color: var(--green); font-weight: 700; }
+  .logo span { color: var(--dim); }
+  nav { display: flex; gap: 22px; font-size: 13px; }
+  nav a { color: var(--dim); }
+  nav a:hover { color: var(--fg); }
+  .window { margin: 56px 0 24px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); overflow: hidden; box-shadow: 0 30px 80px -30px rgba(74,222,128,.15); }
+  .bar { display: flex; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); align-items: center; }
+  .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .bar small { margin-left: 12px; color: var(--dim); font-size: 12px; }
+  .term { padding: 28px 28px 34px; }
+  .p { color: var(--green); }
+  .p::before { content: "eduardo@dadalt:~$ "; color: var(--dim); }
+  h1 { font-size: clamp(32px, 6vw, 60px); line-height: 1.1; color: #eafff0; margin: 18px 0 14px; letter-spacing: -1px; }
+  h1 em { font-style: normal; color: var(--green); }
+  .cursor { display: inline-block; width: .55em; height: 1em; background: var(--green); vertical-align: -0.12em; animation: b 1s steps(1) infinite; }
+  @keyframes b { 50% { opacity: 0; } }
+  .lead { max-width: 640px; color: var(--fg); }
+  .lead b { color: var(--amber); font-weight: 500; }
+  .actions { display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
+  .btn { border: 1px solid var(--green); color: var(--green); padding: 8px 16px; border-radius: 6px; font-size: 13px; }
+  .btn.solid { background: var(--green); color: #052e12; font-weight: 700; }
+  section { padding: 56px 0 8px; }
+  h2 { font-size: 14px; color: var(--dim); font-weight: 400; margin-bottom: 22px; }
+  h2::before { content: "## "; color: var(--green); }
+  h2 b { color: #eafff0; font-size: 22px; font-weight: 700; display: block; margin-top: 4px; }
+  .log { border-left: 1px dashed var(--line); padding-left: 22px; display: grid; gap: 26px; }
+  .entry { position: relative; }
+  .entry::before { content: ""; position: absolute; left: -27px; top: 9px; width: 9px; height: 9px; background: var(--bg); border: 2px solid var(--green); border-radius: 50%; }
+  .entry .meta { font-size: 12px; color: var(--dim); }
+  .entry h3 { font-size: 16px; color: #eafff0; }
+  .entry h3 span { color: var(--cyan); font-weight: 400; }
+  .entry p { color: var(--fg); opacity: .85; font-size: 14px; max-width: 720px; }
+  .skills { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px 28px; }
+  .skill { display: flex; justify-content: space-between; font-size: 14px; border-bottom: 1px dotted var(--line); padding: 6px 0; }
+  .skill i { font-style: normal; color: var(--green); letter-spacing: 1px; }
+  .skill i u { color: var(--line); text-decoration: none; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
+  .card { border: 1px solid var(--line); background: var(--panel); border-radius: 8px; padding: 18px; transition: border-color .2s; }
+  .card:hover { border-color: var(--green); }
+  .card .file { font-size: 12px; color: var(--amber); }
+  .card h3 { font-size: 15px; color: #eafff0; margin: 6px 0; }
+  .card p { font-size: 13px; color: var(--fg); opacity: .8; }
+  .tags { margin-top: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tags span { font-size: 11px; color: var(--cyan); border: 1px solid #164e57; padding: 1px 8px; border-radius: 99px; }
+  .contact { margin: 64px 0; text-align: center; border: 1px solid var(--line); border-radius: 10px; padding: 48px 20px; background: radial-gradient(circle at 50% 0, rgba(74,222,128,.12), transparent 60%); }
+  .contact h3 { font-size: 28px; color: #eafff0; margin: 10px 0 6px; }
+  footer { text-align: center; color: var(--dim); font-size: 12px; padding: 24px 0 40px; }
+  @media (max-width: 720px) { nav { display: none; } }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="logo">~/eduardo<span>.dadalt</span></div>
+  <nav><a href="#exp">experiencia</a><a href="#stack">stack</a><a href="#proj">projetos</a><a href="#contato">contato</a></nav>
+  <a class="btn" href="#contato">./contato</a>
+</div></header>
+
+<main class="wrap">
+  <div class="window">
+    <div class="bar"><i class="dot" style="background:#f87171"></i><i class="dot" style="background:#fbbf24"></i><i class="dot" style="background:#4ade80"></i><small>zsh — eduardo@dadalt</small></div>
+    <div class="term">
+      <div class="p">whoami</div>
+      <h1>Eduardo Dadalt<br/><em>Full Stack Developer</em><span class="cursor"></span></h1>
+      <p class="lead">Tenho 24 anos, desenvolvo sistemas web e mobile na <b>JR Sistemas</b> e estudo Análise e Desenvolvimento de Sistemas na <b>FIAP</b>. Estou sempre em busca de novos conhecimentos e desafios.</p>
+      <div class="actions">
+        <a class="btn solid" href="#proj">ls ./projetos</a>
+        <a class="btn" href="https://github.com/EduardoDadalt">github ↗</a>
+        <a class="btn" href="https://www.linkedin.com/in/eduardo-dadalt/">linkedin ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <section id="exp">
+    <h2>git log --experiencia <b>Experiência & Educação</b></h2>
+    <div class="log">
+      <div class="entry"><div class="meta">out 2021 → atualmente</div><h3>Desenvolvedor <span>@ JR Sistemas</span></h3><p>Desenvolvimento de sistemas web e mobile, manutenção de sistemas legados e suporte técnico.</p></div>
+      <div class="entry"><div class="meta">fev 2023 → atualmente</div><h3>Análise e Desenv. de Sistemas <span>@ FIAP</span></h3><p>Graduação em andamento.</p></div>
+      <div class="entry"><div class="meta">fev 2021 → out 2021</div><h3>Suporte Técnico <span>@ Voxy</span></h3><p>Atendimento e suporte técnico; criei um corretor de arquivo fiscal e um KDS integrado para gestão de pedidos na cozinha.</p></div>
+      <div class="entry"><div class="meta">fev 2018 → fev 2021</div><h3>Técnico em ADS <span>@ IFRS Canoas</span></h3><p>Interrompido pela pandemia e mudança para Itapema/SC.</p></div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <h2>cat stack.json <b>Linguagens & Tecnologias</b></h2>
+    <div class="skills">
+      <div class="skill">TypeScript <i>■■■</i></div><div class="skill">Dart <i>■■■</i></div><div class="skill">JavaScript <i>■■■</i></div><div class="skill">SQL <i>■■■</i></div>
+      <div class="skill">React <i>■■■</i></div><div class="skill">Next.js <i>■■■</i></div><div class="skill">Node.js <i>■■■</i></div><div class="skill">Flutter <i>■■■</i></div>
+      <div class="skill">MySQL <i>■■■</i></div><div class="skill">REST <i>■■■</i></div><div class="skill">Electron <i>■■<u>■</u></i></div><div class="skill">React Native <i>■■<u>■</u></i></div>
+      <div class="skill">Docker <i>■■<u>■</u></i></div><div class="skill">Firebase <i>■■<u>■</u></i></div><div class="skill">Puppeteer <i>■■<u>■</u></i></div><div class="skill">Azure Pipelines <i>■■<u>■</u></i></div>
+      <div class="skill">Python <i>■<u>■■</u></i></div><div class="skill">PostgreSQL <i>■<u>■■</u></i></div><div class="skill">GraphQL <i>■<u>■■</u></i></div><div class="skill">Java <i>■<u>■■</u></i></div>
+    </div>
+  </section>
+
+  <section id="proj">
+    <h2>ls ./projetos <b>Soluções que desenvolvi</b></h2>
+    <div class="grid">
+      <div class="card"><div class="file">sac-whatsapp/</div><h3>SAC integrado com WhatsApp</h3><p>Central única unificando 6 números de WhatsApp, com abertura e acompanhamento de chamados.</p><div class="tags"><span>Node.js</span><span>Flutter</span><span>MySQL</span></div></div>
+      <div class="card"><div class="file">kds-mobile/</div><h3>KDS mobile</h3><p>Integração com TOTVS Chef para cozinha e garçons acompanharem o status dos pedidos.</p><div class="tags"><span>Node.js</span><span>Electron</span><span>React Native</span><span>MsSQL</span></div></div>
+      <div class="card"><div class="file">erp-app/</div><h3>App de ERP para pequenas empresas</h3><p>Liderei o início da migração do legado para Flutter: dashboards, relatórios e cadastros.</p><div class="tags"><span>Flutter</span></div></div>
+      <div class="card"><div class="file">app-garcom/</div><h3>App para garçons</h3><p>Visualização de mesas, lançamento de pedidos e status em tempo real.</p><div class="tags"><span>Flutter</span></div></div>
+      <div class="card"><div class="file">jr-site/</div><h3>Site da JR Sistemas</h3><p>Refiz totalmente o site institucional da empresa.</p><div class="tags"><span>React</span><span>Next.js</span></div></div>
+      <div class="card"><div class="file">automacoes/</div><h3>Automação de processos</h3><p>Download automático de NFC-e de SC e verificação de respostas de chamados.</p><div class="tags"><span>Node.js</span><span>Puppeteer</span></div></div>
+    </div>
+  </section>
+
+  <div class="contact" id="contato">
+    <div class="p" style="display:inline-block">mail --to eduardo</div>
+    <h3>Vamos construir algo juntos?</h3>
+    <p style="color:var(--dim);margin-bottom:22px">Respondo rápido por email.</p>
+    <a class="btn solid" href="mailto:eduardodadalt1@gmail.com">eduardodadalt1@gmail.com</a>
+  </div>
+</main>
+<footer>© 2026 Eduardo Dadalt · exit 0</footer>
+</body>
+</html>

@@ -1,0 +1,27 @@
+export const STACK = {
+  advanced: [
+    "TypeScript",
+    "JavaScript",
+    "Dart",
+    "SQL",
+    "React",
+    "Next.js",
+    "Node.js",
+    "Flutter",
+    "MySQL",
+    "REST",
+  ],
+  intermediate: [
+    "Electron",
+    "React Native",
+    "Docker",
+    "Firebase",
+    "Puppeteer",
+    "MsSQL",
+    "SQLite",
+    "Azure Pipelines",
+    "OAuth2",
+    "JWT",
+  ],
+  basic: ["Python", "Java", "C", "PHP", "PostgreSQL", "Oracle", "GraphQL"],
+};

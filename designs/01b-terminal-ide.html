@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Design 01B · IDE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #090c0a; --side: #0d120f; --ed: #0b0f0c; --panel: #0d120f; --line: #1a241d; --sel: #14201a;
+    --fg: #cfdcd2; --dim: #5f7366; --green: #4ade80; --amber: #fbbf24; --cyan: #67e8f9; --pink: #f472b6; --violet: #c4b5fd;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: var(--bg); color: var(--fg); font: 13.5px/1.7 "JetBrains Mono", ui-monospace, Consolas, monospace; overflow: hidden; }
+  a { color: inherit; }
+  .app { display: grid; grid-template-columns: 50px 250px 1fr; grid-template-rows: 1fr 24px; height: 100vh; }
+  /* activity bar */
+  .act { background: var(--bg); border-right: 1px solid var(--line); display: flex; flex-direction: column; align-items: center; padding-top: 10px; gap: 6px; }
+  .act a { width: 36px; height: 36px; display: grid; place-items: center; color: var(--dim); border-radius: 8px; text-decoration: none; font-size: 17px; position: relative; }
+  .act a:hover { color: var(--fg); background: var(--sel); }
+  .act a.on { color: var(--green); }
+  .act a.on::before { content: ""; position: absolute; left: -7px; top: 8px; bottom: 8px; width: 2px; background: var(--green); }
+  .act .sp { flex: 1; }
+  .act svg { width: 19px; height: 19px; }
+  /* explorer */
+  .side { background: var(--side); border-right: 1px solid var(--line); overflow-y: auto; user-select: none; }
+  .side h6 { font-size: 11px; font-weight: 500; color: var(--dim); letter-spacing: .1em; padding: 12px 18px 8px; }
+  .tree .row { display: flex; align-items: center; gap: 7px; padding: 2px 10px; cursor: pointer; white-space: nowrap; border-left: 2px solid transparent; }
+  .tree .row:hover { background: var(--sel); }
+  .tree .row.on { background: var(--sel); border-left-color: var(--green); color: #f2fff5; }
+  .tree .ico { width: 16px; text-align: center; font-size: 11px; font-weight: 800; }
+  .tree .folder { color: var(--fg); font-weight: 500; }
+  .side .card { margin: 18px 14px; padding: 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 12px; color: var(--dim); }
+  .side .card b { color: var(--fg); font-weight: 500; display: block; margin-bottom: 4px; }
+  .side .card .st { color: var(--green); }
+  /* editor */
+  .main { display: grid; grid-template-rows: 38px 26px 1fr 170px; min-width: 0; background: var(--ed); }
+  .tabs { display: flex; background: var(--side); border-bottom: 1px solid var(--line); overflow-x: auto; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { display: flex; align-items: center; gap: 8px; padding: 0 16px; border-right: 1px solid var(--line); color: var(--dim); cursor: pointer; white-space: nowrap; font-size: 12.5px; }
+  .tab.on { background: var(--ed); color: #f2fff5; box-shadow: inset 0 2px 0 var(--green); }
+  .tab .x { opacity: 0; margin-left: 4px; font-size: 11px; } .tab:hover .x, .tab.on .x { opacity: .6; }
+  .crumbs { padding: 0 20px; display: flex; align-items: center; gap: 6px; color: var(--dim); font-size: 12px; border-bottom: 1px solid var(--line); }
+  .view { overflow: auto; position: relative; }
+  .view::-webkit-scrollbar { width: 10px; height: 10px; } .view::-webkit-scrollbar-thumb { background: var(--line); }
+  .code { display: grid; grid-template-columns: 56px 1fr; padding: 14px 0 40px; min-width: max-content; }
+  .gut { color: #33443a; text-align: right; padding-right: 18px; user-select: none; }
+  .src { white-space: pre; padding-right: 40px; }
+  .src .cur { background: rgba(74,222,128,.05); display: inline-block; width: 100%; }
+  .t-k { color: var(--pink); } .t-s { color: var(--green); } .t-n { color: var(--amber); } .t-p { color: var(--cyan); } .t-c { color: var(--dim); font-style: italic; } .t-v { color: var(--violet); }
+  .t-s a { text-decoration: underline; text-decoration-color: rgba(74,222,128,.4); text-underline-offset: 3px; }
+  /* README preview */
+  .md { max-width: 860px; padding: 48px 56px 64px; font-family: "JetBrains Mono", monospace; }
+  .md .hello { color: var(--green); font-size: 13px; }
+  .md h1 { font-size: clamp(34px, 5vw, 58px); line-height: 1.05; color: #f2fff5; letter-spacing: -.03em; margin: 12px 0 6px; font-weight: 800; }
+  .md h1 span { color: var(--green); }
+  .md .role { font-size: 18px; color: var(--fg); }
+  .md .role .caret { display: inline-block; width: 9px; height: 19px; background: var(--green); vertical-align: -3px; animation: b 1s steps(1) infinite; }
+  @keyframes b { 50% { opacity: 0; } }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 22px 0; }
+  .badge { display: inline-flex; font-size: 11px; border-radius: 4px; overflow: hidden; border: 1px solid var(--line); }
+  .badge b { background: #1a241d; padding: 2px 8px; font-weight: 500; color: var(--fg); }
+  .badge i { padding: 2px 8px; font-style: normal; color: #052e12; font-weight: 700; }
+  .md p { color: var(--fg); max-width: 680px; margin-bottom: 12px; }
+  .md p strong { color: var(--amber); font-weight: 500; }
+  .md h2 { color: #f2fff5; font-size: 18px; margin: 40px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .md h2::before { content: "## "; color: var(--dim); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; }
+  .pc { border: 1px solid var(--line); border-radius: 8px; padding: 14px; cursor: pointer; transition: border-color .15s, background .15s; }
+  .pc:hover { border-color: var(--green); background: var(--sel); }
+  .pc .f { font-size: 11px; color: var(--amber); }
+  .pc h3 { font-size: 14px; color: #f2fff5; margin: 4px 0; }
+  .pc p { font-size: 12px; color: var(--dim); margin: 0; }
+  .cta { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .btn { padding: 7px 16px; border-radius: 6px; text-decoration: none; border: 1px solid var(--green); color: var(--green); font-size: 13px; }
+  .btn.solid { background: var(--green); color: #052e12; font-weight: 700; }
+  .hint { color: var(--dim); font-size: 12px; margin-top: 30px; }
+  .hint kbd { color: var(--amber); font-family: inherit; }
+  /* terminal panel */
+  .term { border-top: 1px solid var(--line); background: var(--panel); display: flex; flex-direction: column; min-height: 0; }
+  .term .hd { display: flex; gap: 22px; padding: 0 20px; height: 32px; align-items: center; font-size: 11px; letter-spacing: .08em; color: var(--dim); }
+  .term .hd .on { color: #f2fff5; box-shadow: 0 1px 0 var(--green); padding: 7px 0; }
+  .term pre { padding: 4px 20px; font: inherit; color: var(--fg); overflow: auto; }
+  .term .g { color: var(--green); } .term .d { color: var(--dim); } .term .a { color: var(--amber); } .term .c { color: var(--cyan); }
+  .term .caret { display: inline-block; width: 8px; height: 15px; background: var(--fg); vertical-align: -2px; animation: b 1s steps(1) infinite; }
+  /* status bar */
+  .status { grid-column: 1 / -1; background: #0f2a19; color: #b9f5cd; display: flex; align-items: center; gap: 18px; padding: 0 12px; font-size: 11.5px; border-top: 1px solid #1d4a2d; }
+  .status .r { margin-left: auto; display: flex; gap: 18px; }
+  .status .live::before { content: "●"; color: var(--green); margin-right: 6px; }
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; } .act, .side { display: none; }
+    .main { grid-template-rows: 38px 0 1fr 0; } .crumbs, .term { display: none; } .md { padding: 28px 20px; }
+    .status .r span:not(:last-child) { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="act">
+    <a class="on" title="Explorer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg></a>
+    <a title="Buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></a>
+    <a href="https://github.com/EduardoDadalt" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg></a>
+    <a href="https://www.linkedin.com/in/eduardo-dadalt/" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.2c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V21h-4z"/></svg></a>
+    <a href="mailto:eduardodadalt1@gmail.com" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
+    <span class="sp"></span>
+    <a title="Idioma" style="font-size:11px;font-weight:700">PT</a>
+  </nav>
+
+  <aside class="side">
+    <h6>EXPLORER</h6>
+    <div class="tree" id="tree"></div>
+    <div class="card"><b>eduardo@dadalt</b>Full Stack · Itapema, SC<br/><span class="st">● disponível para projetos</span></div>
+  </aside>
+
+  <section class="main">
+    <div class="tabs" id="tabs"></div>
+    <div class="crumbs" id="crumbs"></div>
+    <div class="view" id="view"></div>
+    <div class="term">
+      <div class="hd"><span class="on">TERMINAL</span><span>PROBLEMS</span><span>OUTPUT</span></div>
+<pre><span class="g">❯</span> pnpm dev
+  <span class="c">▲ eduardodadalt.com</span> <span class="d">— Next.js</span>
+  <span class="g">✓</span> Ready — <span class="a">24 anos</span>, <span class="a">5+ anos de código</span>, <span class="a">0 bugs conhecidos</span> <span class="d">(até agora)</span>
+<span class="g">❯</span> git log --oneline -1
+  <span class="a">a1f9e2c</span> <span class="c">(HEAD -> main)</span> feat: desenvolvedor @ JR Sistemas
+<span class="g">❯</span> <span class="caret"></span></pre>
+    </div>
+  </section>
+
+  <footer class="status">
+    <span>⎇ main</span><span>✓ 0 ⚠ 0</span><span class="live">disponível</span>
+    <div class="r"><span id="pos">Ln 1, Col 1</span><span>UTF-8</span><span id="lang">Markdown</span><span>pt-BR</span></div>
+  </footer>
+</div>
+
+<script>
+const FILES = {
+"README.md": { lang: "Markdown", icon: ["M↓", "var(--cyan)"], preview: true },
+"sobre.ts": { lang: "TypeScript", icon: ["TS", "#60a5fa"], src:
+`// sobre.ts — quem é o Eduardo
+export const eduardo = {
+  nome: "Eduardo Dadalt",
+  cargo: "Desenvolvedor Full Stack",
+  idade: 24,
+  local: "Itapema, SC",
+  estudando: {
+    curso: "Análise e Desenvolvimento de Sistemas",
+    instituicao: "FIAP",
+    status: "em andamento",
+  },
+  bio: "Estou sempre em busca de novos conhecimentos e desafios.",
+} as const;` },
+"experiencia.ts": { lang: "TypeScript", icon: ["TS", "#60a5fa"], src:
+`import type { Experiencia } from "./types";
+
+export const experiencias: Experiencia[] = [
+  {
+    empresa: "JR Sistemas",
+    cargo: "Desenvolvedor",
+    periodo: ["out 2021", "atualmente"],
+    descricao: "Sistemas web e mobile, manutenção de legados e suporte técnico.",
+  },
+  {
+    empresa: "Voxy",
+    cargo: "Suporte Técnico",
+    periodo: ["fev 2021", "out 2021"],
+    descricao: "Suporte ao cliente; criei um corretor de arquivo fiscal e um KDS para a cozinha.",
+  },
+];
+
+export const educacao = [
+  { instituicao: "FIAP", curso: "Análise e Desenv. de Sistemas", periodo: ["fev 2023", "atualmente"] },
+  { instituicao: "IFRS Canoas", curso: "Técnico em ADS", periodo: ["fev 2018", "fev 2021"] },
+  // interrompido pela pandemia e mudança para Itapema/SC
+];` },
+"projetos.ts": { lang: "TypeScript", icon: ["TS", "#60a5fa"], src:
+`export const projetos = [
+  {
+    nome: "SAC integrado com WhatsApp",
+    stack: ["Node.js", "Flutter", "MySQL"],
+    resumo: "Central única unificando 6 números de WhatsApp, com chamados e status.",
+  },
+  {
+    nome: "KDS mobile",
+    stack: ["Node.js", "Electron", "React Native", "MsSQL"],
+    resumo: "Integração com TOTVS Chef: a cozinha marca pedidos prontos, o garçom acompanha.",
+  },
+  {
+    nome: "App de ERP para pequenas empresas",
+    stack: ["Flutter"],
+    resumo: "Início da migração do legado: dashboards, relatórios e cadastros.",
+  },
+  {
+    nome: "App para garçons",
+    stack: ["Flutter"],
+    resumo: "Mesas, lançamento de pedidos e status em tempo real.",
+  },
+  {
+    nome: "Site da JR Sistemas",
+    stack: ["React", "Next.js"],
+    resumo: "Site institucional refeito do zero.",
+  },
+  {
+    nome: "Automação de processos",
+    stack: ["Node.js", "Puppeteer"],
+    resumo: "Download automático de NFC-e de SC e verificação de chamados.",
+  },
+];` },
+"stack.json": { lang: "JSON", icon: ["{}", "var(--amber)"], src:
+`{
+  "avancado": ["TypeScript", "JavaScript", "Dart", "SQL", "React", "Next.js",
+               "Node.js", "Flutter", "MySQL", "REST"],
+  "intermediario": ["Electron", "React Native", "Docker", "Firebase", "Puppeteer",
+                    "MsSQL", "SQLite", "Azure Pipelines", "OAuth2", "JWT"],
+  "basico": ["Python", "Java", "C", "PHP", "PostgreSQL", "Oracle", "GraphQL"]
+}` },
+"contato.sh": { lang: "Shell Script", icon: ["$_", "var(--green)"], src:
+`#!/usr/bin/env bash
+# Vamos conversar? Escolha um canal e clique no link.
+
+EMAIL="mailto:eduardodadalt1@gmail.com"
+GITHUB="https://github.com/EduardoDadalt"
+LINKEDIN="https://www.linkedin.com/in/eduardo-dadalt/"
+
+echo "Respondo rápido por email 👋"` },
+};
+const ORDER = ["README.md", "sobre.ts", "experiencia.ts", "projetos.ts", "stack.json", "contato.sh"];
+
+function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+function hl(src, lang) {
+  const kw = "export|const|as|import|type|from|return|function|echo|true|false|null";
+  const comment = lang === "Shell Script" ? "#.*$" : "\\/\\/.*$";
+  const re = new RegExp(`(${comment})|("(?:[^"\\\\]|\\\\.)*")|\\b(${kw})\\b|\\b(\\d+)\\b|([A-Za-z_]\\w*)(?=\\s*[:=])|(\\$?[A-Z]{3,}\\b)`, "gm");
+  return esc(src).replace(re, (m, c, s, k, n, p, v) => {
+    if (c) return `<span class="t-c">${c}</span>`;
+    if (s) { const inner = s.slice(1, -1); return /^(https?:|mailto:)/.test(inner) ? `<span class="t-s">"<a href="${inner}" target="_blank">${inner}</a>"</span>` : `<span class="t-s">${s}</span>`; }
+    if (k) return `<span class="t-k">${k}</span>`;
+    if (n) return `<span class="t-n">${n}</span>`;
+    if (p) return `<span class="t-p">${p}</span>`;
+    if (v) return `<span class="t-v">${v}</span>`;
+    return m;
+  });
+}
+
+const README = `<div class="md">
+  <div class="hello">// olá, mundo — meu nome é</div>
+  <h1>Eduardo <span>Dadalt</span></h1>
+  <div class="role">Desenvolvedor Full Stack <span class="caret"></span></div>
+  <div class="badges">
+    <span class="badge"><b>status</b><i style="background:var(--green)">disponível</i></span>
+    <span class="badge"><b>empresa</b><i style="background:var(--cyan)">JR Sistemas</i></span>
+    <span class="badge"><b>estudando</b><i style="background:var(--amber)">ADS @ FIAP</i></span>
+    <span class="badge"><b>local</b><i style="background:var(--violet)">Itapema, SC</i></span>
+  </div>
+  <p>Tenho 24 anos e construo sistemas <strong>web e mobile</strong> — de ERPs em Flutter a centrais de atendimento integradas ao WhatsApp. Estudo Análise e Desenvolvimento de Sistemas na FIAP e estou sempre em busca de novos conhecimentos e desafios.</p>
+  <div class="cta"><a class="btn solid" href="mailto:eduardodadalt1@gmail.com">./contato.sh</a><a class="btn" href="https://github.com/EduardoDadalt">github ↗</a><a class="btn" href="https://www.linkedin.com/in/eduardo-dadalt/">linkedin ↗</a></div>
+  <h2>Projetos em destaque</h2>
+  <div class="grid">
+    <div class="pc" data-open="projetos.ts"><div class="f">Node.js · Flutter · MySQL</div><h3>SAC integrado com WhatsApp</h3><p>6 números de WhatsApp em uma central única.</p></div>
+    <div class="pc" data-open="projetos.ts"><div class="f">Electron · React Native</div><h3>KDS mobile</h3><p>Pedidos da cozinha integrados ao TOTVS Chef.</p></div>
+    <div class="pc" data-open="projetos.ts"><div class="f">Flutter</div><h3>ERP para pequenas empresas</h3><p>Migração do legado: dashboards e relatórios.</p></div>
+    <div class="pc" data-open="projetos.ts"><div class="f">React · Next.js</div><h3>Site da JR Sistemas</h3><p>Site institucional refeito do zero.</p></div>
+  </div>
+  <div class="hint">→ explore os arquivos na barra lateral, ou pressione <kbd>Ctrl+P</kbd> 😉</div>
+</div>`;
+
+let open = ["README.md", "sobre.ts", "projetos.ts"], active = "README.md";
+const $ = (id) => document.getElementById(id);
+function ico(f) { const [t, c] = FILES[f].icon; return `<span class="ico" style="color:${c}">${t}</span>`; }
+function render() {
+  $("tree").innerHTML = `<div class="row folder"><span class="ico">⌄</span>eduardo-dadalt</div>` +
+    ORDER.map(f => `<div class="row ${f === active ? "on" : ""}" data-f="${f}" style="padding-left:26px">${ico(f)}${f}</div>`).join("");
+  $("tabs").innerHTML = open.map(f => `<div class="tab ${f === active ? "on" : ""}" data-f="${f}">${ico(f)}${f}<span class="x" data-close="${f}">✕</span></div>`).join("");
+  $("crumbs").innerHTML = `eduardo-dadalt <span>›</span> ${ico(active)} ${active}`;
+  $("lang").textContent = FILES[active].lang;
+  const file = FILES[active];
+  if (file.preview) { $("view").innerHTML = README; }
+  else {
+    const lines = hl(file.src, file.lang).split("\n");
+    $("view").innerHTML = `<div class="code"><div class="gut">${lines.map((_, i) => i + 1).join("<br>")}</div><div class="src">${lines.map((l, i) => i === 0 ? `<span class="cur">${l || " "}</span>` : l).join("\n")}</div></div>`;
+  }
+  $("view").scrollTop = 0;
+}
+function openFile(f) { if (!open.includes(f)) open.push(f); active = f; render(); }
+document.addEventListener("click", (e) => {
+  const close = e.target.closest("[data-close]");
+  if (close) { const f = close.dataset.close; open = open.filter(x => x !== f); if (!open.length) open = ["README.md"]; if (active === f) active = open[open.length - 1]; render(); e.stopPropagation(); return; }
+  const el = e.target.closest("[data-f],[data-open]");
+  if (el) openFile(el.dataset.f || el.dataset.open);
+});
+document.addEventListener("keydown", (e) => {
+  if (e.ctrlKey && e.key.toLowerCase() === "p") { e.preventDefault(); const i = ORDER.indexOf(active); openFile(ORDER[(i + 1) % ORDER.length]); }
+});
+render();
+</script>
+</body>
+</html>

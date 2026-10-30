@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Design 01A · Terminal interativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #070a08; --win: #0c110e; --bar: #111814; --line: #1c2720;
+    --fg: #cfdcd2; --dim: #5f7366; --green: #4ade80; --amber: #fbbf24; --cyan: #67e8f9; --pink: #f472b6; --red: #f87171;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: var(--bg); color: var(--fg); font: 14.5px/1.65 "JetBrains Mono", ui-monospace, Consolas, monospace; display: flex; padding: 28px; background-image: radial-gradient(circle at 50% -20%, rgba(74,222,128,.10), transparent 55%); }
+  a { color: var(--cyan); }
+  .win { flex: 1; max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; background: var(--win); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: 0 40px 120px -40px rgba(74,222,128,.25), 0 0 0 1px rgba(0,0,0,.6); }
+  .bar { display: flex; align-items: center; gap: 8px; padding: 0 14px; height: 42px; background: var(--bar); border-bottom: 1px solid var(--line); flex-shrink: 0; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .tabs { display: flex; gap: 2px; margin-left: 18px; height: 100%; align-items: end; }
+  .tab { padding: 7px 16px; font-size: 12px; color: var(--dim); border-radius: 8px 8px 0 0; }
+  .tab.on { background: var(--win); color: var(--fg); border: 1px solid var(--line); border-bottom: 0; }
+  .bar .right { margin-left: auto; display: flex; gap: 14px; font-size: 12px; }
+  .bar .right a { color: var(--dim); text-decoration: none; }
+  .bar .right a:hover { color: var(--green); }
+  .screen { flex: 1; overflow-y: auto; padding: 22px 26px 10px; cursor: text; }
+  .screen::-webkit-scrollbar { width: 8px; } .screen::-webkit-scrollbar-thumb { background: var(--line); border-radius: 8px; }
+  .ln { white-space: pre-wrap; word-break: break-word; }
+  .ps { color: var(--green); } .ps b { color: var(--cyan); font-weight: 500; } .ps i { color: var(--dim); font-style: normal; }
+  .cmd { color: #f2fff5; }
+  .out { margin: 6px 0 18px; }
+  .dim { color: var(--dim); } .g { color: var(--green); } .a { color: var(--amber); } .c { color: var(--cyan); } .p { color: var(--pink); } .w { color: #f2fff5; font-weight: 700; }
+  .neo { white-space: normal; display: flex; gap: 36px; align-items: flex-start; flex-wrap: wrap; }
+  .logo { color: var(--green); line-height: 1.05; font-weight: 800; text-shadow: 0 0 18px rgba(74,222,128,.35); font-size: 15px; }
+  .info div { white-space: nowrap; }
+  .info .k { color: var(--green); font-weight: 700; display: inline-block; min-width: 92px; }
+  .swatch { display: flex; margin-top: 10px; } .swatch i { width: 26px; height: 14px; }
+  .tbl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 22px; }
+  .proj { border-left: 2px solid var(--line); padding: 2px 0 2px 14px; margin: 10px 0; max-width: 820px; }
+  .proj:hover { border-color: var(--green); }
+  .proj .t { color: #f2fff5; font-weight: 700; }
+  .proj .tags span { color: var(--cyan); } .proj .tags span::before { content: "#"; color: var(--dim); }
+  .meter { color: var(--green); letter-spacing: -1px; } .meter u { color: #22302700; text-decoration: none; color: var(--line); }
+  .stack { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2px 32px; max-width: 980px; }
+  .stack div { display: grid; grid-template-columns: 140px 1fr; }
+  .input { display: flex; align-items: center; }
+  .input input { flex: 1; background: transparent; border: 0; outline: 0; color: #f2fff5; font: inherit; caret-color: var(--green); margin-left: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 26px 16px; border-top: 1px solid var(--line); background: var(--bar); flex-shrink: 0; align-items: center; }
+  .chips small { color: var(--dim); font-size: 12px; margin-right: 4px; }
+  .chips button { font: 12px "JetBrains Mono", monospace; color: var(--green); background: transparent; border: 1px solid #1f3a28; padding: 4px 12px; border-radius: 6px; cursor: pointer; }
+  .chips button:hover { background: var(--green); color: #052e12; }
+  .chips kbd { margin-left: auto; color: var(--dim); font: 11px "JetBrains Mono"; }
+  .btnl { display: inline-block; color: #052e12; background: var(--green); padding: 2px 12px; border-radius: 4px; text-decoration: none; font-weight: 700; }
+  @media (max-width: 700px) { body { padding: 0; } .win { border-radius: 0; } .bar .right, .chips kbd { display: none; } .screen { padding: 16px; } .logo { font-size: 11px; } }
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="bar">
+    <i class="dot" style="background:#f87171"></i><i class="dot" style="background:#fbbf24"></i><i class="dot" style="background:#4ade80"></i>
+    <div class="tabs"><div class="tab on">eduardo@dadalt: ~</div><div class="tab">pt-BR</div><div class="tab">en</div></div>
+    <div class="right"><a href="https://github.com/EduardoDadalt">github ↗</a><a href="https://www.linkedin.com/in/eduardo-dadalt/">linkedin ↗</a><a href="mailto:eduardodadalt1@gmail.com">email ↗</a></div>
+  </div>
+  <div class="screen" id="screen">
+    <div id="log"></div>
+    <div class="input" id="inputRow" style="visibility:hidden"><span class="ps" id="psLive"></span><input id="in" autocomplete="off" spellcheck="false" aria-label="Digite um comando" /></div>
+  </div>
+  <div class="chips" id="chips"><small>comandos:</small></div>
+</div>
+
+<script>
+const PS = '<span class="ps"><b>eduardo</b><i>@</i>dadalt <i>~</i> <span class="g">❯</span></span>';
+const LOGO = [
+"█████ ████ ",
+"█     █   █",
+"████  █   █",
+"█     █   █",
+"█████ ████ "].join("\n");
+
+const C = {
+  help: () => `<div class="tbl">
+<span class="g">sobre</span><span class="dim">quem sou eu</span>
+<span class="g">experiencia</span><span class="dim">onde trabalhei e estudei</span>
+<span class="g">projetos</span><span class="dim">soluções que desenvolvi</span>
+<span class="g">stack</span><span class="dim">linguagens e tecnologias</span>
+<span class="g">contato</span><span class="dim">vamos conversar</span>
+<span class="g">neofetch</span><span class="dim">resumo do sistema</span>
+<span class="g">clear</span><span class="dim">limpar a tela</span></div>
+<div class="dim" style="margin-top:8px">dica: use <span class="a">Tab</span> para autocompletar e <span class="a">↑ ↓</span> para o histórico.</div>`,
+  neofetch: () => `<div class="neo"><pre class="logo">${LOGO}</pre><div class="info">
+<div><span class="w">eduardo</span><span class="dim">@</span><span class="w">dadalt</span></div>
+<div class="dim">──────────────────────</div>
+<div><span class="k">Cargo</span> Desenvolvedor Full Stack</div>
+<div><span class="k">Empresa</span> JR Sistemas <span class="dim">(2021 → hoje)</span></div>
+<div><span class="k">Formação</span> ADS @ FIAP <span class="dim">(em andamento)</span></div>
+<div><span class="k">Idade</span> 24 anos</div>
+<div><span class="k">Local</span> Itapema, SC</div>
+<div><span class="k">Shell</span> TypeScript, Dart</div>
+<div><span class="k">Uptime</span> 5+ anos de código</div>
+<div class="swatch"><i style="background:#0c110e"></i><i style="background:#f87171"></i><i style="background:#4ade80"></i><i style="background:#fbbf24"></i><i style="background:#67e8f9"></i><i style="background:#f472b6"></i><i style="background:#cfdcd2"></i></div>
+</div></div>`,
+  sobre: () => `Olá! Sou o <span class="w">Eduardo Dadalt</span>, desenvolvedor <span class="g">Full Stack</span> de 24 anos.
+Estudo Análise e Desenvolvimento de Sistemas na <a href="http://fiap.com.br">FIAP</a> e trabalho com
+sistemas web e mobile na <span class="a">JR Sistemas</span>. Estou sempre em busca de novos
+conhecimentos e desafios.`,
+  experiencia: () => `<span class="dim">commit</span> <span class="a">a1f9e2c</span> <span class="c">(HEAD -> atual)</span>
+<span class="w">Desenvolvedor @ JR Sistemas</span>                <span class="dim">out 2021 → hoje</span>
+    Sistemas web e mobile, manutenção de legados e suporte técnico.
+
+<span class="dim">commit</span> <span class="a">7c03b11</span> <span class="c">(estudando)</span>
+<span class="w">Análise e Desenv. de Sistemas @ FIAP</span>      <span class="dim">fev 2023 → hoje</span>
+    Graduação em andamento.
+
+<span class="dim">commit</span> <span class="a">4be8d07</span>
+<span class="w">Suporte Técnico @ Voxy</span>                     <span class="dim">fev 2021 → out 2021</span>
+    Suporte ao cliente; criei um corretor de arquivo fiscal e um KDS
+    integrado para gestão de pedidos na cozinha.
+
+<span class="dim">commit</span> <span class="a">01d5aa3</span> <span class="dim">(initial commit)</span>
+<span class="w">Técnico em ADS @ IFRS Canoas</span>               <span class="dim">fev 2018 → fev 2021</span>
+    Interrompido pela pandemia e mudança para Itapema/SC.`,
+  projetos: () => `<span class="dim">total 6</span>` + [
+    ["sac-whatsapp/", "SAC integrado com WhatsApp", "Central única unificando 6 números de WhatsApp: técnicos abrem chamados, acompanham status e conversam com clientes.", ["nodejs","flutter","mysql"]],
+    ["kds-mobile/", "KDS mobile", "Integração com TOTVS Chef: cozinha marca pedidos prontos e o garçom acompanha em tempo real.", ["nodejs","electron","reactnative","mssql"]],
+    ["erp-flutter/", "App de ERP para pequenas empresas", "Comecei a migração do legado para Flutter: dashboards, relatórios e cadastros.", ["flutter"]],
+    ["app-garcom/", "App para garçons", "Visualização de mesas, lançamento de pedidos e status.", ["flutter"]],
+    ["site-jr/", "Site da JR Sistemas", "Refiz totalmente o site institucional da empresa.", ["react","nextjs"]],
+    ["automacoes/", "Automação de processos", "Download automático de NFC-e de SC e verificação de respostas de chamados.", ["nodejs","puppeteer"]],
+  ].map(([d,t,s,tags]) => `<div class="proj"><span class="a">drwxr-xr-x</span> <span class="c">${d}</span>  <span class="t">${t}</span>\n<span>${s}</span>\n<span class="tags">${tags.map(x=>`<span>${x}</span>`).join("  ")}</span></div>`).join(""),
+  stack: () => {
+    const m = (n) => `<span class="meter">${"█".repeat(n*4)}<u>${"░".repeat(12-n*4)}</u></span>`;
+    const s = [["TypeScript",3],["JavaScript",3],["Dart",3],["SQL",3],["React",3],["Next.js",3],["Node.js",3],["Flutter",3],["MySQL",3],["REST",3],["Electron",2],["React Native",2],["Docker",2],["Firebase",2],["Puppeteer",2],["MsSQL",2],["Azure Pipelines",2],["JWT / OAuth2",2],["Python",1],["Java",1],["PostgreSQL",1],["GraphQL",1]];
+    return `<div class="stack">${s.map(([n,l])=>`<div><span>${n}</span>${m(l)}</div>`).join("")}</div><div class="dim" style="margin-top:8px"><span class="g">████</span> básico  <span class="g">████████</span> intermediário  <span class="g">████████████</span> avançado</div>`;
+  },
+  contato: () => `<span class="g">✓</span> Canais abertos:
+  <span class="k a">email   </span> <a href="mailto:eduardodadalt1@gmail.com">eduardodadalt1@gmail.com</a>
+  <span class="k a">github  </span> <a href="https://github.com/EduardoDadalt">github.com/EduardoDadalt</a>
+  <span class="k a">linkedin</span> <a href="https://www.linkedin.com/in/eduardo-dadalt/">linkedin.com/in/eduardo-dadalt</a>
+
+<a class="btnl" href="mailto:eduardodadalt1@gmail.com">→ enviar email</a>`,
+  ls: () => `<span class="c">projetos/</span>  <span class="c">experiencia/</span>  sobre.md  stack.json  contato.sh`,
+  whoami: () => `eduardo — desenvolvedor full stack`,
+  sudo: () => `<span class="red" style="color:var(--red)">eduardo não está no arquivo sudoers. Este incidente será reportado. 😄</span>`,
+};
+const ALIASES = { about: "sobre", projects: "projetos", experience: "experiencia", contact: "contato", "?": "help", "cat sobre.md": "sobre", "ls projetos": "projetos" };
+
+const log = document.getElementById("log"), input = document.getElementById("in"), screen = document.getElementById("screen");
+document.getElementById("psLive").innerHTML = PS;
+const hist = []; let hi = 0;
+
+function print(cmd, html) {
+  const el = document.createElement("div");
+  el.innerHTML = `<div class="ln">${PS} <span class="cmd">${cmd}</span></div>` + (html != null ? `<div class="ln out">${html}</div>` : "");
+  log.appendChild(el);
+  screen.scrollTop = screen.scrollHeight;
+}
+function run(raw) {
+  const cmd = raw.trim(); if (!cmd) return print("");
+  hist.push(cmd); hi = hist.length;
+  const key = ALIASES[cmd] || cmd.split(" ")[0];
+  if (key === "clear") { log.innerHTML = ""; return; }
+  if (key === "sudo") return print(cmd, C.sudo());
+  if (C[key]) return print(cmd, C[key]());
+  print(cmd, `<span style="color:var(--red)">zsh: comando não encontrado: ${cmd.replace(/</g,"&lt;")}</span>  <span class="dim">— digite</span> <span class="g">help</span>`);
+}
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") { run(input.value); input.value = ""; }
+  else if (e.key === "ArrowUp") { if (hi > 0) input.value = hist[--hi]; e.preventDefault(); }
+  else if (e.key === "ArrowDown") { input.value = hi < hist.length - 1 ? hist[++hi] : (hi = hist.length, ""); e.preventDefault(); }
+  else if (e.key === "Tab") { e.preventDefault(); const m = Object.keys(C).concat("clear").filter(k => k.startsWith(input.value)); if (m.length === 1) input.value = m[0]; else if (m.length) print(input.value, m.join("  ")); }
+  else if (e.key === "l" && e.ctrlKey) { e.preventDefault(); log.innerHTML = ""; }
+});
+screen.addEventListener("click", () => { if (!getSelection().toString()) input.focus(); });
+
+const chips = document.getElementById("chips");
+["sobre","experiencia","projetos","stack","contato","neofetch","clear"].forEach(c => {
+  const b = document.createElement("button"); b.textContent = c; b.onclick = () => { run(c); input.focus(); }; chips.appendChild(b);
+});
+chips.insertAdjacentHTML("beforeend", "<kbd>Tab autocompleta · ↑↓ histórico</kbd>");
+
+// Boot: digita os primeiros comandos automaticamente
+async function type(cmd) {
+  const row = document.createElement("div"); row.className = "ln"; row.innerHTML = `${PS} <span class="cmd"></span>`; log.appendChild(row);
+  const span = row.querySelector(".cmd");
+  for (const ch of cmd) { span.textContent += ch; await new Promise(r => setTimeout(r, 55)); }
+  await new Promise(r => setTimeout(r, 180)); row.remove(); run(cmd);
+}
+(async () => {
+  await type("neofetch");
+  await type("help");
+  document.getElementById("inputRow").style.visibility = "visible";
+  input.focus();
+})();
+</script>
+</body>
+</html>

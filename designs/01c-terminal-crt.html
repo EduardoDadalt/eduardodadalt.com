@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Design 01C · CRT retrô</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  :root { --ph: #ffb000; --ph-dim: #a36f00; --ph-faint: #3d2a00; --bg: #0d0900; --glow: rgba(255,176,0,.55); }
+  body.green { --ph: #33ff66; --ph-dim: #1f9e40; --ph-faint: #0b3517; --bg: #020c05; --glow: rgba(51,255,102,.5); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #000; color: var(--ph); font: 22px/1.25 VT323, "IBM Plex Mono", monospace; min-height: 100vh; transition: color .3s; }
+  .crt { background: radial-gradient(ellipse at center, var(--bg) 0%, #000 120%); min-height: 100vh; position: relative; text-shadow: 0 0 2px var(--ph), 0 0 12px var(--glow); animation: flick 6s infinite; }
+  .crt::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 20; background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0, rgba(0,0,0,0) 2px, rgba(0,0,0,.28) 3px, rgba(0,0,0,0) 4px); }
+  .crt::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 21; background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.75) 100%); }
+  @keyframes flick { 0%, 96%, 100% { opacity: 1; } 97% { opacity: .86; } 98% { opacity: .97; } }
+  .scan { position: fixed; left: 0; right: 0; height: 120px; z-index: 19; pointer-events: none; background: linear-gradient(to bottom, transparent, rgba(255,255,255,.035), transparent); animation: roll 7s linear infinite; }
+  @keyframes roll { from { top: -120px; } to { top: 100%; } }
+  a { color: var(--ph); }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 28px 28px 60px; }
+  .top { display: flex; justify-content: space-between; border-bottom: 2px solid var(--ph-dim); padding-bottom: 6px; }
+  .top button { font: inherit; background: none; border: 1px solid var(--ph-dim); color: var(--ph); padding: 0 10px; cursor: pointer; text-shadow: inherit; }
+  .top button:hover { background: var(--ph); color: var(--bg); }
+  .boot { margin: 18px 0 8px; color: var(--ph-dim); }
+  .boot div { opacity: 0; animation: on .01s forwards; }
+  @keyframes on { to { opacity: 1; } }
+  .ok { color: var(--ph); }
+  .banner { --cell: calc((min(1004px, 100vw - 56px) - 81px) / 82); display: grid; grid-template-columns: repeat(82, var(--cell)); grid-auto-rows: calc(var(--cell) * 1.25); gap: 1px; margin: 26px 0 16px; opacity: 0; animation: on .01s 1.6s forwards; }
+  .banner i { background: var(--ph); box-shadow: 0 0 8px var(--glow); }
+  .sub { font-size: 30px; opacity: 0; animation: on .01s 1.8s forwards; }
+  .cursor { display: inline-block; width: .55em; height: .95em; background: var(--ph); vertical-align: -.1em; box-shadow: 0 0 10px var(--glow); animation: bl 1s steps(1) infinite; }
+  @keyframes bl { 50% { opacity: 0; } }
+  .menu { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 30px 0 10px; padding: 8px 0; border-top: 2px solid var(--ph-dim); border-bottom: 2px solid var(--ph-dim); }
+  .menu a { text-decoration: none; }
+  .menu a:hover, .menu a:focus { background: var(--ph); color: var(--bg); text-shadow: none; outline: 0; }
+  .menu a b { color: var(--bg); background: var(--ph); padding: 0 6px; margin-right: 6px; text-shadow: none; font-weight: 400; }
+  .box { border: 4px double var(--ph-dim); padding: 18px 22px 20px; margin-top: 34px; position: relative; }
+  .box > h2 { position: absolute; top: -17px; left: 16px; background: var(--bg); padding: 0 10px; font-weight: 400; font-size: 26px; }
+  .box p { max-width: 820px; }
+  .hi { background: var(--ph); color: var(--bg); text-shadow: none; padding: 0 4px; }
+  .dim { color: var(--ph-dim); }
+  .row { display: grid; grid-template-columns: 220px 1fr; gap: 4px 20px; padding: 8px 0; border-bottom: 1px dashed var(--ph-faint); }
+  .row:last-child { border: 0; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-weight: 400; background: var(--ph); color: var(--bg); text-shadow: none; padding: 2px 10px; }
+  td { padding: 8px 10px; vertical-align: top; border-bottom: 1px dashed var(--ph-faint); }
+  tr:hover td { background: var(--ph-faint); }
+  td:first-child { color: var(--ph-dim); width: 40px; }
+  td .t { display: block; }
+  td small { font-size: 20px; color: var(--ph-dim); }
+  .htop { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 40px; }
+  .bar { display: grid; grid-template-columns: 170px 1fr 50px; white-space: nowrap; overflow: hidden; }
+  .bar span:nth-child(2) { color: var(--ph); letter-spacing: -1px; }
+  .bar span:nth-child(2) i { font-style: normal; color: var(--ph-faint); }
+  .bar span:last-child { text-align: right; color: var(--ph-dim); }
+  .contact { text-align: center; padding: 30px 10px 26px; }
+  .contact .big { font-size: 40px; }
+  .contact a.enter { display: inline-block; margin-top: 14px; border: 2px solid var(--ph); padding: 4px 18px; text-decoration: none; }
+  .contact a.enter:hover { background: var(--ph); color: var(--bg); text-shadow: none; }
+  .foot { margin-top: 40px; display: flex; justify-content: space-between; color: var(--ph-dim); border-top: 2px solid var(--ph-dim); padding-top: 6px; }
+  @media (max-width: 760px) { body { font-size: 19px; } .htop { grid-template-columns: 1fr; } .row { grid-template-columns: 1fr; } .bar { grid-template-columns: 130px 1fr 44px; } }
+</style>
+</head>
+<body>
+<div class="crt"><div class="scan"></div>
+<div class="wrap">
+  <div class="top"><span>DADALT-OS v24.0</span><span><button id="ph" title="Trocar cor do fósforo">FÓSFORO: ÂMBAR</button> &nbsp; PT/EN</span></div>
+
+  <div class="boot" id="boot"></div>
+
+<div class="banner" id="banner" role="img" aria-label="EDUARDO DADALT"></div>
+  <div class="sub">&gt; DESENVOLVEDOR FULL STACK<span class="cursor"></span></div>
+
+  <nav class="menu">
+    <a href="#sobre"><b>1</b>SOBRE</a><a href="#trajetoria"><b>2</b>TRAJETÓRIA</a><a href="#projetos"><b>3</b>PROJETOS</a><a href="#stack"><b>4</b>STACK</a><a href="#contato"><b>5</b>CONTATO</a>
+    <span class="dim" style="margin-left:auto">PRESSIONE 1-5</span>
+  </nav>
+
+  <section class="box" id="sobre"><h2>[ SOBRE.TXT ]</h2>
+    <p>OLÁ. MEU NOME É <span class="hi">EDUARDO DADALT</span>, TENHO 24 ANOS E SOU DESENVOLVEDOR FULL STACK EM ITAPEMA/SC.</p>
+    <p style="margin-top:10px">CONSTRUO SISTEMAS WEB E MOBILE NA JR SISTEMAS E ESTUDO ANÁLISE E DESENVOLVIMENTO DE SISTEMAS NA <a href="http://fiap.com.br">FIAP</a>. ESTOU SEMPRE EM BUSCA DE NOVOS CONHECIMENTOS E DESAFIOS.</p>
+  </section>
+
+  <section class="box" id="trajetoria"><h2>[ TRAJETORIA.LOG ]</h2>
+    <div class="row"><span class="dim">OUT/2021 → HOJE</span><span><span class="hi">DESENVOLVEDOR</span> @ JR SISTEMAS<br/><span class="dim">SISTEMAS WEB E MOBILE, LEGADOS E SUPORTE.</span></span></div>
+    <div class="row"><span class="dim">FEV/2023 → HOJE</span><span>ANÁLISE E DESENV. DE SISTEMAS @ FIAP<br/><span class="dim">GRADUAÇÃO EM ANDAMENTO.</span></span></div>
+    <div class="row"><span class="dim">FEV → OUT/2021</span><span>SUPORTE TÉCNICO @ VOXY<br/><span class="dim">CORRETOR DE ARQUIVO FISCAL E KDS PARA COZINHA.</span></span></div>
+    <div class="row"><span class="dim">2018 → 2021</span><span>TÉCNICO EM ADS @ IFRS CANOAS<br/><span class="dim">INTERROMPIDO PELA PANDEMIA.</span></span></div>
+  </section>
+
+  <section class="box" id="projetos"><h2>[ PROJETOS.DB ]</h2>
+    <table>
+      <tr><th>#</th><th>PROJETO</th><th>STACK</th></tr>
+      <tr><td>01</td><td><span class="t">SAC INTEGRADO COM WHATSAPP</span><small>6 NÚMEROS DE WHATSAPP EM UMA CENTRAL ÚNICA DE CHAMADOS.</small></td><td>NODE.JS / FLUTTER / MYSQL</td></tr>
+      <tr><td>02</td><td><span class="t">KDS MOBILE</span><small>INTEGRAÇÃO COM TOTVS CHEF PARA COZINHA E GARÇONS.</small></td><td>ELECTRON / REACT NATIVE / MSSQL</td></tr>
+      <tr><td>03</td><td><span class="t">ERP PARA PEQUENAS EMPRESAS</span><small>MIGRAÇÃO DO LEGADO: DASHBOARDS, RELATÓRIOS, CADASTROS.</small></td><td>FLUTTER</td></tr>
+      <tr><td>04</td><td><span class="t">APP PARA GARÇONS</span><small>MESAS, PEDIDOS E STATUS EM TEMPO REAL.</small></td><td>FLUTTER</td></tr>
+      <tr><td>05</td><td><span class="t">SITE DA JR SISTEMAS</span><small>SITE INSTITUCIONAL REFEITO DO ZERO.</small></td><td>REACT / NEXT.JS</td></tr>
+      <tr><td>06</td><td><span class="t">AUTOMAÇÃO DE PROCESSOS</span><small>NFC-E AUTOMÁTICA E VERIFICAÇÃO DE CHAMADOS.</small></td><td>NODE.JS / PUPPETEER</td></tr>
+    </table>
+  </section>
+
+  <section class="box" id="stack"><h2>[ HTOP — STACK ]</h2>
+    <div class="htop" id="htop"></div>
+  </section>
+
+  <section class="box contact" id="contato"><h2>[ CONTATO.EXE ]</h2>
+    <div class="big">VAMOS CONSTRUIR ALGO JUNTOS?</div>
+    <div class="dim">EMAIL · <a href="https://github.com/EduardoDadalt">GITHUB</a> · <a href="https://www.linkedin.com/in/eduardo-dadalt/">LINKEDIN</a></div>
+    <a class="enter" href="mailto:eduardodadalt1@gmail.com">&gt; PRESSIONE [ENTER] PARA ENVIAR EMAIL<span class="cursor"></span></a>
+  </section>
+
+  <div class="foot"><span>© 2026 EDUARDO DADALT</span><span>MEM 640K OK · SEM ERROS</span></div>
+</div>
+</div>
+<script>
+  const BANNER = [
+"█████ ████  █   █  ███  ████  ████   ███       ████   ███  ████   ███  █     █████",
+"█     █   █ █   █ █   █ █   █ █   █ █   █      █   █ █   █ █   █ █   █ █       █  ",
+"████  █   █ █   █ █████ ████  █   █ █   █      █   █ █████ █   █ █████ █       █  ",
+"█     █   █ █   █ █   █ █  █  █   █ █   █      █   █ █   █ █   █ █   █ █       █  ",
+"█████ ████   ███  █   █ █   █ ████   ███       ████  █   █ ████  █   █ █████   █  "];
+  document.getElementById("banner").innerHTML = BANNER.map(r => [...r.padEnd(82)].map(c => c === "█" ? "<i></i>" : "<span></span>").join("")).join("");
+  const bootLines = [
+    "DADALT BIOS v2.0.24  (C) 2002-2026",
+    "CPU: CAFÉ-POWERED FULL STACK @ 24 ANOS ......... <span class='ok'>OK</span>",
+    "MEMÓRIA: 5+ ANOS DE CÓDIGO .......................... <span class='ok'>OK</span>",
+    "CARREGANDO TYPESCRIPT.SYS  DART.SYS  NODE.SYS ...... <span class='ok'>OK</span>",
+    "C:\\&gt; PORTFOLIO.EXE",
+  ];
+  const boot = document.getElementById("boot");
+  bootLines.forEach((l, i) => { const d = document.createElement("div"); d.innerHTML = l; d.style.animationDelay = (0.25 + i * 0.28) + "s"; boot.appendChild(d); });
+
+  const stack = [["TYPESCRIPT",3],["JAVASCRIPT",3],["DART",3],["SQL",3],["REACT",3],["NEXT.JS",3],["NODE.JS",3],["FLUTTER",3],["MYSQL",3],["REST",3],["ELECTRON",2],["REACT NATIVE",2],["DOCKER",2],["FIREBASE",2],["PUPPETEER",2],["MSSQL",2],["PYTHON",1],["JAVA",1],["POSTGRESQL",1],["GRAPHQL",1]];
+  const pct = { 3: 90, 2: 60, 1: 30 };
+  document.getElementById("htop").innerHTML = stack.map(([n, l]) => {
+    const full = Math.round(pct[l] / 5);
+    return `<div class="bar"><span>${n}</span><span>[${"|".repeat(full)}<i>${"·".repeat(20 - full)}</i>]</span><span>${pct[l]}%</span></div>`;
+  }).join("");
+
+  const ids = ["sobre", "trajetoria", "projetos", "stack", "contato"];
+  document.addEventListener("keydown", (e) => {
+    const n = parseInt(e.key, 10);
+    if (n >= 1 && n <= 5) document.getElementById(ids[n - 1]).scrollIntoView({ behavior: "smooth" });
+    if (e.key === "Enter" && location.hash === "#contato") location.href = "mailto:eduardodadalt1@gmail.com";
+  });
+  const btn = document.getElementById("ph");
+  btn.onclick = () => { document.body.classList.toggle("green"); btn.textContent = "FÓSFORO: " + (document.body.classList.contains("green") ? "VERDE" : "ÂMBAR"); };
+</script>
+</body>
+</html>
