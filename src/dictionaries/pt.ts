@@ -1,157 +1,161 @@
-import { type Dictionary } from "./Dictionary";
-import getAge from "../lib/get-age";
+import getAge from "@/lib/get-age";
+import type { Dictionary } from "./types";
 
 const age = getAge();
 
 const pt: Dictionary = {
-  header: {
-    forMoreInfoAccess: "Para mais informações, acesse",
-    languages: "Linguagens",
-    technologies: "Tecnologias",
-    solutions: "Soluções",
-    repositories: "Repositórios",
-    contact: "Contato",
+  metadata: {
+    title: "Eduardo Dadalt — Desenvolvedor Full Stack",
+    description:
+      "Desenvolvedor Full Stack que constrói sistemas web e mobile com React, Next.js, Node.js e Flutter.",
   },
-  homepage: {
-    metadata: {
-      title: "Eduardo Dadalt - Desenvolvedor Full Stack",
-      description:
-        "Desenvolvedor Full Stack, apaixonado por tecnologia e inovação.",
-    },
-    pageOnConstruction: "Página em construção",
-    myInfo: {
-      hiMyNameIs: "Olá, meu nome é",
-      description: `Sou desenvolvedor **Full Stack** e tenho ${age} anos. Atualmente estou estudando Análise e Desenvolvimento de Sistemas na [FIAP](http://fiap.com.br). Estou sempre em busca de novos conhecimentos e desafios`,
-      experience: {
-        title: "Experiências",
-        position: "Cargo",
-        description: "Descrição",
-        jobs: [
-          {
-            company: "Voxy",
-            position: "Suporte Técnico",
-            dateBegin: "Fev de 2021",
-            dataEnd: "Out de 2021",
-            description:
-              "Atendimento ao cliente, suporte técnico e desenvolvia algumas soluções para a equipe, como um sistema de correção do arquivo fiscal que o sistema gerava. Também criei um sistema de KDS integrado com o sistema para gerenciamento de pedidos na cozinha",
-          },
-          {
-            company: "JR Sistemas",
-            position: "Desenvolvedor",
-            dateBegin: "Out de 2021",
-            dataEnd: "Atualmente",
-            description:
-              "Desenvolvimento de sistemas web e mobile, manutenção de sistemas legados e suporte técnico.",
-          },
-        ],
-      },
-      education: {
-        title: "Educação",
-        institution: "Instituição",
-        situation: "Situação",
-        steps: [
-          {
-            institution: "FIAP",
-            course: "Análise e Desenvolvimento de Sistemas",
-            dateBegin: "Fev de 2023",
-            dateEnd: "Atualmente",
-            description: "Em andamento",
-          },
-          {
-            institution: "IFRS - Campus Canoas",
-            course:
-              "Ensino Médio Técnico em Análise e Desenvolvimento de Sistemas",
-            dateBegin: "Fev 2018",
-            dateEnd: "Fev de 2021",
-            description:
-              "Incompleto por conta da pandemia do COVID-19 e eu ter me mudado para Itapema/SC. Concluí o ensino médio em 2022.",
-          },
-        ],
-      },
-    },
-    programmingLanguage: {
-      title: "Linguagens de Programação",
-      iconOf: "Ícone do",
-    },
-    technology: {
-      title: "Tecnologias",
-      description:
-        "Aqui estão algumas das tecnologias que tenho experiência e que posso utilizar para desenvolver soluções.",
-    },
-    solution: {
-      title: "Soluções",
-      description:
-        "Aqui estão algumas das soluções que desenvolvi ou participei ativamente do desenvolvimento.",
-      solutions: [
-        {
-          title: "App de ERP para pequenas empresas",
-          description: "Utilizando Flutter (Frontend)",
-          content:
-            "Começamos a migrar o sistema legado para Flutter. Cuidei do começo dessa migração, fiz dashboards relatórios, formulários de cadastros",
-          languagesAndTechnologies: ["/icons/technologies/flutter.svg"],
-        },
-        {
-          title: "App para Garçons lançarem pedidos",
-          description: "Utilizando Flutter (Frontend)",
-          content:
-            "Trabalhei em um sistema para garçons lançarem pedidos, onde o garçom pode visualizar as mesas, lançar pedidos e visualizar o status dos pedidos.",
-          languagesAndTechnologies: ["/icons/technologies/flutter.svg"],
-        },
-        {
-          title: "Site da empresa JR Sistemas",
-          description: "Utilizando React e NextJS",
-          content: "Refiz totalmente o site da empresa JR Sistemas",
-          languagesAndTechnologies: [
-            "/icons/technologies/react.svg",
-            "/icons/technologies/next.js.svg",
-          ],
-        },
-        {
-          title: "SAC integrado com WhatsApp",
-          description: "Utilizando Node.js, Flutter e MySQL",
-          content:
-            "Desenvolvi totalmente um sistema de para atendimento de clientes unificando 6 WhatsApp em uma central única, onde os técnicos pode abrir chamados, visualizar o status dos chamados e conversar com os clientes via WhatsApp.",
-          languagesAndTechnologies: [
-            "/icons/technologies/node.js.svg",
-            "/icons/technologies/flutter.svg",
-            "/icons/technologies/mysql.svg",
-          ],
-        },
-        {
-          title: "KDS mobile",
-          description: "Utilizando Node.js, Electron, ReactNative e MsSQL",
-          content:
-            "Desenvolvi totalmente uma integração com o sistema TOTVS Chef para gerenciamento de pedidos na cozinha, onde os cozinheiros podem visualizar os pedidos e marcar como prontos, e o garçom pode visualizar o status do pedido e entregar ao cliente.",
-          languagesAndTechnologies: [
-            "/icons/technologies/node.js.svg",
-            "/icons/technologies/electron.svg",
-            "/icons/technologies/react.svg",
-            "/icons/technologies/mssql.svg",
-          ],
-        },
-        {
-          title: "Automatização de processos",
-          description: "Utilizando Node.js, Puppeteer",
-          content:
-            "Desenvolvi automações para otimizar processos, como baixar automaticamente NFC-e de SC e verificar respostas de chamados",
-          languagesAndTechnologies: [
-            "/icons/technologies/node.js.svg",
-            "/icons/technologies/puppeteer.svg",
-          ],
-        },
-      ],
-    },
-    contact: {
-      title: "Contato",
-      youCanContactMeVia: "Você pode entrar em contato comigo via",
-    },
+  files: {
+    readme: "README.md",
+    about: "sobre.ts",
+    experience: "experiencia.ts",
+    projects: "projetos.ts",
+    stack: "stack.json",
+    contact: "contato.sh",
   },
-  components: {
-    cardLevel: {
-      basic: "Básico",
-      intermediate: "Intermediário",
-      advanced: "Avançado",
+  ui: {
+    explorer: "EXPLORER",
+    terminal: "TERMINAL",
+    problems: "PROBLEMAS",
+    output: "SAÍDA",
+    available: "disponível para projetos",
+    closeTab: "Fechar aba",
+    switchLanguage: "Switch to English",
+  },
+  profile: {
+    role: "Desenvolvedor Full Stack",
+    location: "Itapema, SC",
+    degree: {
+      course: "Análise e Desenvolvimento de Sistemas",
+      institution: "FIAP",
+      status: "concluído em dez 2024",
     },
+    bio: "Estou sempre em busca de novos conhecimentos e desafios.",
+  },
+  readme: {
+    greeting: "olá, mundo — meu nome é",
+    intro: `Tenho ${age} anos e construo sistemas **web e mobile** — de ERPs em Flutter a centrais de atendimento integradas ao WhatsApp. Sou formado em Análise e Desenvolvimento de Sistemas pela FIAP e estou sempre em busca de novos conhecimentos e desafios.`,
+    badges: {
+      status: "status",
+      statusValue: "disponível",
+      company: "empresa",
+      degree: "formação",
+      location: "local",
+    },
+    featured: "Projetos em destaque",
+    hint: "explore os arquivos na barra lateral, ou pressione",
+    photoAlt: "Foto do Eduardo Dadalt",
+  },
+  experience: [
+    {
+      company: "JR Sistemas",
+      role: "Desenvolvedor",
+      period: ["out 2021", "atualmente"],
+      description:
+        "Sistemas web e mobile, manutenção de sistemas legados e suporte técnico.",
+    },
+    {
+      company: "Voxy",
+      role: "Suporte Técnico",
+      period: ["fev 2021", "out 2021"],
+      description:
+        "Suporte ao cliente; criei um corretor do arquivo fiscal gerado pelo sistema e um KDS integrado para gestão de pedidos na cozinha.",
+    },
+  ],
+  education: [
+    {
+      institution: "FIAP",
+      course: "Análise e Desenvolvimento de Sistemas",
+      period: ["fev 2023", "dez 2024"],
+    },
+    {
+      institution: "IFRS Canoas",
+      course: "Técnico em Análise e Desenvolvimento de Sistemas",
+      period: ["fev 2018", "fev 2021"],
+      note: "interrompido pela pandemia e mudança para Itapema/SC",
+    },
+  ],
+  projects: [
+    {
+      name: "SAC integrado com WhatsApp",
+      stack: ["Node.js", "Flutter", "MySQL"],
+      summary:
+        "Central única unificando 6 números de WhatsApp: técnicos abrem chamados, acompanham o status e conversam com os clientes.",
+      featured: true,
+    },
+    {
+      name: "KDS mobile",
+      stack: ["Node.js", "Electron", "React Native", "MsSQL"],
+      summary:
+        "Integração com o TOTVS Chef: a cozinha marca pedidos como prontos e o garçom acompanha o status.",
+      featured: true,
+    },
+    {
+      name: "App de ERP para pequenas empresas",
+      stack: ["Flutter"],
+      summary:
+        "Início da migração do sistema legado para Flutter: dashboards, relatórios e formulários de cadastro.",
+      featured: true,
+    },
+    {
+      name: "App para garçons",
+      stack: ["Flutter"],
+      summary:
+        "Visualização de mesas, lançamento de pedidos e acompanhamento do status.",
+    },
+    {
+      name: "Site da JR Sistemas",
+      stack: ["React", "Next.js"],
+      summary: "Site institucional da empresa refeito do zero.",
+      featured: true,
+    },
+    {
+      name: "Automação de processos",
+      stack: ["Node.js", "Puppeteer"],
+      summary:
+        "Download automático de NFC-e de SC e verificação de respostas de chamados.",
+    },
+  ],
+  terminal: {
+    ready: `${age} anos, codando desde 2018`,
+    lastCommit: "feat: desenvolvedor @ JR Sistemas",
+  },
+  code: {
+    keys: {
+      name: "nome",
+      role: "cargo",
+      age: "idade",
+      location: "local",
+      degree: "formacao",
+      course: "curso",
+      institution: "instituicao",
+      status: "status",
+      bio: "bio",
+      company: "empresa",
+      period: "periodo",
+      description: "descricao",
+      note: "observacao",
+      stack: "stack",
+      summary: "resumo",
+      advanced: "avancado",
+      intermediate: "intermediario",
+      basic: "basico",
+    },
+    vars: {
+      experiences: "experiencias",
+      education: "educacao",
+      projects: "projetos",
+    },
+    comments: {
+      about: "sobre.ts — quem é o Eduardo",
+      educationNote: "formação",
+      contact: ["Vamos conversar? Escolha um canal e clique no link."],
+    },
+    contactEcho: "Respondo rápido por email 👋",
   },
 };
 

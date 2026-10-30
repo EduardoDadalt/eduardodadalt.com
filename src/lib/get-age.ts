@@ -1,7 +1,12 @@
-export default function getAge(): number {
-  return (
-    new Date().getFullYear() -
-    2002 -
-    (new Date().getMonth() > 6 && new Date().getDate() >= 10 ? 0 : 1)
-  );
+const BIRTH_YEAR = 2002;
+const BIRTH_MONTH_INDEX = 7; // agosto
+const BIRTH_DAY = 10;
+
+export default function getAge(now = new Date()): number {
+  const month = now.getMonth();
+  const hadBirthdayThisYear =
+    month > BIRTH_MONTH_INDEX ||
+    (month === BIRTH_MONTH_INDEX && now.getDate() >= BIRTH_DAY);
+
+  return now.getFullYear() - BIRTH_YEAR - (hadBirthdayThisYear ? 0 : 1);
 }

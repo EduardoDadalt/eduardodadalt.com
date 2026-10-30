@@ -1,59 +1,34 @@
-import Contact from "@/components/sections/contact";
-import MyInfo from "@/components/sections/my-info";
-import ProgrammingLanguages from "@/components/sections/programming-languages";
-import Solutions from "@/components/sections/solutions";
-import Technologies from "@/components/sections/technology";
-import { getDictionary } from "@/dictionaries/dictionaries";
-import "@/styles/homepage.css";
-import { AlertCircle } from "lucide-react";
-import { Metadata } from "next";
+import Breadcrumbs from "@/components/ide/breadcrumbs";
+import Readme from "@/components/ide/readme";
+import { isLocale, LOCALES } from "@/constants/locales";
+import { getDictionary } from "@/dictionaries";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
+// A idade é calculada no build; revalida uma vez por dia.
 export const revalidate = 86400;
 
 export async function generateMetadata({
-  params: { locale },
-}: {
-  params: { locale: string };
-}): Promise<Metadata> {
-  const dictionary = await getDictionary(locale);
+  params,
+}: PageProps<"/[locale]">): Promise<Metadata> {
+  const { locale } = await params;
   return {
-    metadataBase: new URL("https://eduardodadalt.com"),
     alternates: {
-      canonical: "/",
-      languages: {
-        en: "/en",
-        pt: "/pt",
-      },
-    },
-    title: dictionary.homepage.metadata.title,
-    description: dictionary.homepage.metadata.description,
-    openGraph: {
-      siteName: "Eduardo Dadalt",
+      canonical: `/${locale}`,
+      languages: Object.fromEntries(LOCALES.map((l) => [l, `/${l}`])),
     },
   };
 }
 
-export default async function Home({
-  params: { locale },
-}: {
-  params: { locale: string };
-}) {
+export default async function ReadmePage({ params }: PageProps<"/[locale]">) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
   const dictionary = await getDictionary(locale);
+
   return (
-    <div>
-      <div className="flex flex-row items-center justify-center gap-2 bg-amber-300 p-16 text-2xl text-amber-950">
-        <AlertCircle /> {dictionary.homepage.pageOnConstruction}
-      </div>
-      <MyInfo locale={locale} />
-      {/* Linguagens de Programação */}
-      <ProgrammingLanguages locale={locale} />
-      {/* Tecnologias que utilizo */}
-      <Technologies locale={locale} />
-      {/* Soluções */}
-      <Solutions locale={locale} />
-      {/* Repositorios */}
-      <Contact locale={locale} />
-      {/* Contato */}
-    </div>
+    <>
+      <Breadcrumbs id="readme" name={dictionary.files.readme} />
+      <Readme locale={locale} dictionary={dictionary} />
+    </>
   );
 }
